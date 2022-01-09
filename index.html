@@ -59,6 +59,20 @@
             height: 10px;
             margin-right: 5px;
         }
+
+        .mapboxgl-ctrl-top-center {
+            top: 0;
+            left: 50%;
+            position:absolute;
+            pointer-events:none;
+            z-index:2;
+        }
+
+        .mapboxgl-ctrl-top-center .mapboxgl-ctrl {
+            margin:10px 0 0 10px;
+        }
+
+
         .map-overlay {
             position: absolute;
             bottom: 30px;
@@ -173,7 +187,6 @@
     </style>
 </head>
 <body>
-
 <div id="map"></div>
 <div class='map-overlay-2'>
     <label class="categoryLabelFirst">Layers</label>
@@ -237,6 +250,8 @@
             center: [-1.8040, 52.4766],
             zoom: 11,
         });
+
+        map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
 
         map.addControl(
             new MapboxGeocoder({
