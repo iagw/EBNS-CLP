@@ -1,6 +1,6 @@
 console.log('testing4j');
 mapboxgl.accessToken = 'pk.eyJ1IjoiaWFndyIsImEiOiJja3g0dWd6MDkwdjNoMm9ueHhvank3cHFnIn0.BGjIRENbnIB5gU4Nrx-huA';
-var map = new mapboxgl.Map({
+let map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
     // style: 'mapbox://styles/mapbox/streets-v11',
@@ -323,7 +323,7 @@ map.on('load', () => {
 //     map.setFilter("id2", ['in', 'current_energy_rating', getRandomCurrentEnergyRating()]);
 // });
 
-var currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N'];
+let currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N'];
 
 // function getRandomCurrentEnergyRating() {
 //     const randomElement = currentEnergyRatingArray[Math.floor(Math.random() * currentEnergyRatingArray.length)];
