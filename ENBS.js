@@ -1,4 +1,3 @@
-console.log('testing4j');
 mapboxgl.accessToken = 'pk.eyJ1IjoiaWFndyIsImEiOiJja3g0dWd6MDkwdjNoMm9ueHhvank3cHFnIn0.BGjIRENbnIB5gU4Nrx-huA';
 let map = new mapboxgl.Map({
     container: 'map',
