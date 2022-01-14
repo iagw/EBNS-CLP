@@ -8,13 +8,13 @@
     <link href='https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css' rel='stylesheet'>
     <script async defer src='https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.js'></script>
     <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
-    <link
-            href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css"
-            rel="stylesheet"
-    />
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet"/>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.3.0/mapbox-gl-draw.js'></script>
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.3.0/mapbox-gl-draw.css' type='text/css' />
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css">
-
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+    <!--    <script src="./js/turf.min.js" charset="utf-8"></script>-->
     <style>
         body {
             margin: 0;
@@ -88,7 +88,7 @@
         }
 
         .map-overlay-2 {
-            font: 20px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            font: 16px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
             background: rgba(255, 255, 255, 0.9);
             position: absolute;
             border-radius: 3px;
@@ -112,7 +112,7 @@
         .map-overlay-2 .categoryLabelOthers {
             font-weight: bold;
             display:inline-block;
-            margin-top: 25px;
+            margin-top: 15px;
             margin-bottom: 5px;
         }
 
@@ -189,19 +189,63 @@
 <body>
 <div id="map"></div>
 <div class='map-overlay-2'>
-    <label class="categoryLabelFirst">Layers</label>
+    <label class="categoryLabelFirst">Boundary Layers</label>
     <div>
         <div>
             <input type="checkbox" id="Ward boundariesCB" value="Ward boundaries"
                    onchange="switchlayer('Ward boundaries')" />
             <label for="Ward boundariesCB">Ward boundaries</label>
         </div>
-
         <div>
             <input type="checkbox" id="LSOA boundariesCB" value="LSOA boundaries"
                    onchange="switchlayer('LSOA boundaries')" />
             <label for="LSOA boundariesCB">LSOA boundaries</label>
         </div>
+        <div>
+            <input type="checkbox" id="bromfordCB" value="bromford"
+                   onchange="switchBromford('bromford')" />
+            <label for="bromfordCB">Bromford</label>
+        </div>
+<!--        <div>-->
+<!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
+<!--            <label for="no epcTenure">no epc</label>-->
+<!--        </div>-->
+
+        <div>
+                <input type="checkbox" id="no epcCB" value="no epc" onchange="switchvis('no epc')" checked/>
+                <label for="no epcCB">valid epc</label>
+            </div>
+
+        <label class="categoryLabelOthers">Tenure</label>
+        <div>
+            <input type="checkbox" id="owner-occupiedTenure"
+                   value="owner-occupied" onchange="switchvisTenure('owner-occupied')" checked/>
+            <label for="owner-occupiedTenure">owner-occupied</label>
+        </div>
+        <div>
+            <input type="checkbox" id="rental (social)Tenure"
+                   value="rental (social)" onchange="switchvisTenure('rental (social)')" checked/>
+            <label for="rental (social)Tenure">rental (social)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="rental (private)Tenure"
+                   value="rental (private)" onchange="switchvisTenure('rental (private)')" checked/>
+            <label for="rental (private)Tenure">rental (private)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="unknownTenure" value="unknown" onchange="switchvisTenure('unknown')" checked/>
+            <label for="unknownTenure">unknown</label>
+        </div>
+        <div>
+            <input type="checkbox" id="not defined new buildTenure"
+                   value="not defined new build" onchange="switchvisTenure('not defined new build')" checked/>
+            <label for="not defined new buildTenure">not defined new build</label>
+        </div>
+        <div>
+            <input type="checkbox" id="no dataTenure" value="no data" onchange="switchvisTenure('no data')" checked/>
+            <label for="no dataTenure">no data</label>
+        </div>
+
 
         <label class="categoryLabelOthers">Current EPC Rating</label>
         <div>
@@ -233,385 +277,94 @@
                 <input type="checkbox" id="GCB" value="G" onchange="switchvis('G')" checked/>
                 <label for="GCB">G</label>
             </div>
-            <div>
-                <input type="checkbox" id="NCB" value="N" onchange="switchvis('N')" checked/>
-                <label for="NCB">N = No EPC</label>
-            </div>
+<!--            <div><select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
+<!--                <option value="total_emissions_grade" selected>Total Emission Grade</option>-->
+<!--                <option value="car_emissions_grade">Car Emissions Grade</option>-->
+<!--                <option value="van_grade">Van Emissions Grade</option>-->
+<!--            </div>-->
         </div>
     </div>
-
-    <script type="text/javascript" src="ENBS.js" ></script>
-
-<!--    <script>-->
-<!--        var map;-->
-<!--        mapboxgl.accessToken = 'pk.eyJ1IjoiaWFndyIsImEiOiJja3g0dWd6MDkwdjNoMm9ueHhvank3cHFnIn0.BGjIRENbnIB5gU4Nrx-huA';-->
-<!--        map = new mapboxgl.Map({-->
-<!--            container: 'map',-->
-<!--            style: 'mapbox://styles/mapbox/light-v10',-->
-<!--            // style: 'mapbox://styles/mapbox/streets-v11',-->
-<!--            center: [-1.8040, 52.4766],-->
-<!--            zoom: 11,-->
-<!--        });-->
-
-<!--        map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');-->
-
-<!--        map.addControl(-->
-<!--            new MapboxGeocoder({-->
-<!--                accessToken: mapboxgl.accessToken,-->
-
-<!--// Limit seach results to the UK.-->
-<!--                countries: 'gb',-->
-<!--// Use a bounding box to further limit results-->
-<!--// to the geographic bounds representing East Birmingham-->
-<!--                bbox: [-1.901035, 52.377688, -1.667387, 52.524273],-->
-<!--                mapboxgl: mapboxgl-->
-<!--            })-->
-<!--        );-->
-
-<!--        map.on('load', () => {-->
-<!--            map.addSource('points', {-->
-<!--                'type': 'geojson',-->
-<!--                'data': './EBNS_epcs_compact_4326.geojson'-->
-<!--            });-->
-
-<!--            map.addSource('wards', {-->
-<!--                'type': 'geojson',-->
-<!--                'data': './CLP-wards_4326.geojson'-->
-<!--            });-->
-
-<!--            map.addSource('lsoas', {-->
-<!--                'type': 'geojson',-->
-<!--                'data': './LSOAs_4326.geojson'-->
-<!--            });-->
-<!--            // from https://docs.mapbox.com/mapbox-gl-js/example/change-building-color-based-on-zoom-level/-->
-<!--            map.setPaintProperty('building', 'fill-color', [-->
-<!--                'interpolate',-->
-<!--                // Set the exponential rate of change to 0.5-->
-<!--                ['exponential', 0.5],-->
-<!--                ['zoom'],-->
-<!--                // When zoom is 15, buildings will be darker.-->
-<!--                15,-->
-<!--                // '#7d807d',-->
-<!--                '#D9D3C9',-->
-<!--                // When zoom is 18 or higher, buildings will be lighter.-->
-<!--                18,-->
-<!--                '#D9D3C9'-->
-<!--            ]);-->
-
-<!--            map.setPaintProperty('building', 'fill-opacity', [-->
-<!--                'interpolate',-->
-<!--                // Set the exponential rate of change to 0.5-->
-<!--                ['exponential', 0.5],-->
-<!--                ['zoom'],-->
-<!--                // When zoom is 10, buildings will be 100% transparent.-->
-<!--                10,-->
-<!--                0.5,-->
-<!--                // When zoom is 18 or higher, buildings will be 100% opaque.-->
-<!--                18,-->
-<!--                1-->
-<!--            ]);-->
-
-<!--//         map.addLayer(-->
-<!--//             {-->
-<!--//                 'id': 'id1',-->
-<!--//                 'type': 'heatmap',-->
-<!--//                 'source': 'points',-->
-<!--//                 'maxzoom': 20,-->
-<!--//                 'paint': {-->
-<!--// // // increase weight as diameter breast height increases-->
-<!--// //                     'heatmap-weight': {-->
-<!--// //                         'property': 'dbh',-->
-<!--// //                         'type': 'exponential',-->
-<!--// //                         'stops': [-->
-<!--// //                             [1, 0],-->
-<!--// //                             [62, 1]-->
-<!--// //                         ]-->
-<!--// //                     },-->
-<!--// // increase intensity as zoom level increases-->
-<!--//                     'heatmap-intensity': {-->
-<!--//                         'stops': [-->
-<!--//                             [11, 1],-->
-<!--//                             [15, 3]-->
-<!--//                         ]-->
-<!--//                     },-->
-<!--// // use sequential color palette to use exponentially as the weight increases-->
-<!--//                     'heatmap-color': [-->
-<!--//                         'interpolate',-->
-<!--//                         ['linear'],-->
-<!--//                         ['heatmap-density'],-->
-<!--//                         0,-->
-<!--//                         'rgba(236,222,239,0)',-->
-<!--//                         0.2,-->
-<!--//                         'rgb(208,209,230)',-->
-<!--//                         0.4,-->
-<!--//                         'rgb(166,189,219)',-->
-<!--//                         0.6,-->
-<!--//                         'rgb(103,169,207)',-->
-<!--//                         0.8,-->
-<!--//                         'rgb(28,144,153)'-->
-<!--//                     ],-->
-<!--// // increase radius as zoom increases-->
-<!--//                     'heatmap-radius': {-->
-<!--//                         'stops': [-->
-<!--//                             [11, 25],-->
-<!--//                             [15, 40]-->
-<!--//                         ]-->
-<!--//                     },-->
-<!--// // decrease opacity to transition into the circle layer-->
-<!--//                     'heatmap-opacity': {-->
-<!--//                         'default': 1,-->
-<!--//                         'stops': [-->
-<!--//                             [14, 1],-->
-<!--//                             [15, 0]-->
-<!--//                         ]-->
-<!--//                     }-->
-<!--//                 }-->
-<!--//             },-->
-<!--//         );-->
-
-<!--            map.addLayer(-->
-<!--                {-->
-<!--                    "id": "data-driven-circles-labels",-->
-<!--                    "type": "symbol",-->
-<!--                    "source": "points",-->
-<!--                    "minzoom": 16,-->
-<!--                    "filter": ["has", "current_energy_rating"],-->
-<!--                    "layout": {-->
-<!--                        "text-field": ["get", "current_energy_rating"],-->
-<!--                        "text-size": 12,-->
-<!--                        "text-padding": 10,-->
-<!--                        "text-variable-anchor": [-->
-<!--                            "top-right",-->
-<!--                            "bottom-right",-->
-<!--                            "right",-->
-<!--                            "top-left",-->
-<!--                            "bottom-left"-->
-<!--                        ],-->
-<!--                        "text-justify": "auto",-->
-<!--                        "text-radial-offset": [-->
-<!--                            "interpolate",-->
-<!--                            ["linear"],-->
-<!--                            ["zoom"],-->
-<!--                            1,-->
-<!--                            0.09,-->
-<!--                            5,-->
-<!--                            0.15,-->
-<!--                            10,-->
-<!--                            0.24,-->
-<!--                            22,-->
-<!--                            0.3-->
-<!--                        ]-->
-<!--                    },-->
-<!--                    "paint": {-->
-<!--                        "text-color": "hsl(0, 0%, 0%)",-->
-<!--                        "text-halo-color": "hsl(0, 0%, 100%)",-->
-<!--                        "text-halo-width": 1,-->
-<!--                        "text-halo-blur": 0.5-->
-<!--                    }-->
-<!--                }-->
-<!--            );-->
-
-
-<!--            map.addLayer(-->
-<!--                {-->
-<!--                    'id': 'id2',-->
-<!--                    'type': 'circle',-->
-<!--                    'source': 'points',-->
-<!--                    'minzoom': 11,-->
-<!--                    'paint': {-->
-<!--                        // 'circle-radius': 8,-->
-<!--                        'circle-radius': {-->
-<!--                            'type': 'exponential',-->
-<!--                            'stops': [-->
-<!--                                [11, 3],-->
-<!--                                [16, 8],-->
-<!--                                [22, 15],-->
-<!--                            ]-->
-<!--                        },-->
-<!--                        'circle-color': [-->
-<!--                            "match",-->
-<!--                            [-->
-<!--                                "get",-->
-<!--                                "current_energy_rating"-->
-<!--                            ],-->
-
-<!--                            "A",-->
-<!--                            "hsl(214,45%,49%)",-->
-<!--                            "B",-->
-<!--                            "hsl(195,59%,79%)",-->
-<!--                            "C",-->
-<!--                            // "hsl(44,98%,78%)",-->
-<!--                            "hsl(30,98%,69%)",-->
-<!--                            "D",-->
-<!--                            // "hsl(30,98%,69%)",-->
-<!--                            "hsl(14,89%,61%)",-->
-<!--                            "E",-->
-<!--                            "hsl(3,69%,50%)",-->
-<!--                            // "hsl(14,89%,61%)",-->
-<!--                            "F",-->
-<!--                            "hsl(3,69%,50%)",-->
-<!--                            "G",-->
-<!--                            "hsl(346,100%,32%)",-->
-<!--                            "hsla(0, 0%, 0%, 0)",-->
-<!--                        ],-->
-
-
-<!--                        'circle-stroke-color': '#7d807d', //'white'-->
-<!--                        // 'circle-stroke-width': 1,-->
-<!--                        'circle-stroke-width': {-->
-<!--                            'type': 'exponential',-->
-<!--                            'stops': [-->
-<!--                                [11, 0],-->
-<!--                                [18, 2],-->
-<!--                            ]-->
-<!--                        },-->
-<!--                        'circle-opacity': 0.7,-->
-<!--                    }-->
-<!--                },-->
-<!--            );-->
-
-<!--            map.addLayer({-->
-<!--                'id': 'Ward boundaries',-->
-<!--                'type': 'line',-->
-<!--                'source': 'wards', // reference the data source-->
-<!--                'layout': {-->
-<!--                    // Make the layer non-visible by default.-->
-<!--                    'visibility': 'none',-->
-<!--                    'line-join': 'round',-->
-<!--                    'line-cap': 'round'-->
-<!--                },-->
-<!--                'minzoom': 10,-->
-<!--                'maxzoom': 15,-->
-<!--                'paint': {-->
-<!--                    'line-color': '#385dce', // blue color fill-->
-<!--                    // 'fill-opacity': 1,-->
-<!--                    // 'line-width': 3-->
-<!--                    'line-width': {-->
-<!--                        'type': 'exponential',-->
-<!--                        'stops': [-->
-<!--                            [11, 2],-->
-<!--                            [15, 3],-->
-<!--                        ]-->
-<!--                    },-->
-<!--                }-->
-<!--            });-->
-
-<!--            map.addLayer({-->
-<!--                'id': 'LSOA boundaries',-->
-<!--                'type': 'line',-->
-<!--                'source': 'lsoas', // reference the data source-->
-<!--                'layout': {-->
-<!--                    // Make the layer non-visible by default.-->
-<!--                    'visibility': 'none',-->
-<!--                    'line-join': 'round',-->
-<!--                    'line-cap': 'round'-->
-<!--                },-->
-<!--                'minzoom': 10,-->
-<!--                'maxzoom': 18,-->
-<!--                'paint': {-->
-<!--                    'line-color': '#341309',-->
-<!--                    // 'fill-opacity': 1,-->
-<!--                    // 'line-width': 2-->
-<!--                    'line-width': {-->
-<!--                        'type': 'exponential',-->
-<!--                        'stops': [-->
-<!--                            [11, 1],-->
-<!--                            [15, 3],-->
-<!--                        ]-->
-<!--                    },-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-
-<!--        // var toggleableLayerIds = [ 'Ward boundaries', 'LSOA boundaries' ];-->
-<!--        //-->
-<!--        // for (var i = 0; i < toggleableLayerIds.length; i++) {-->
-<!--        //     var id = toggleableLayerIds[i];-->
-<!--        //-->
-<!--        //     var link = document.createElement('a');-->
-<!--        //     link.href = '#';-->
-<!--        //     link.className = 'active';-->
-<!--        //     link.textContent = id;-->
-<!--        //-->
-<!--        //     link.onclick = function (e) {-->
-<!--        //         var clickedLayer = this.textContent;-->
-<!--        //         e.preventDefault();-->
-<!--        //         e.stopPropagation();-->
-<!--        //-->
-<!--        //         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');-->
-<!--        //-->
-<!--        //         if (visibility === 'visible') {-->
-<!--        //             map.setLayoutProperty(clickedLayer, 'visibility', 'none');-->
-<!--        //             this.className = '';-->
-<!--        //         } else {-->
-<!--        //             this.className = 'active';-->
-<!--        //             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');-->
-<!--        //         }-->
-<!--        //     };-->
-<!--        //-->
-<!--        //     var layers = document.getElementById('menu');-->
-<!--        //     layers.appendChild(link);-->
-<!--        // }-->
-
-<!--        // map.on("click", "id2", function(e) {-->
-<!--        //     map.setFilter("id2", ['in', 'current_energy_rating', getRandomCurrentEnergyRating()]);-->
-<!--        // });-->
-
-<!--        var currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N'];-->
-
-<!--        // function getRandomCurrentEnergyRating() {-->
-<!--        //     const randomElement = currentEnergyRatingArray[Math.floor(Math.random() * currentEnergyRatingArray.length)];-->
-<!--        //     return randomElement;-->
-<!--        // }-->
-
-<!--        switchlayer = function (lname) {-->
-<!--            if (document.getElementById(lname + "CB").checked) {-->
-<!--                map.setLayoutProperty(lname, 'visibility', 'visible');-->
-<!--            } else {-->
-<!--                map.setLayoutProperty(lname, 'visibility', 'none');-->
-<!--            }-->
-<!--        }-->
-
-
-<!--        switchvis = function (lname) {-->
-<!--            if (document.getElementById(lname + "CB").checked) {-->
-<!--                currentEnergyRatingArray.push(lname);-->
-<!--                map.setFilter('id2', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);-->
-<!--                map.setFilter('data-driven-circles-labels', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);-->
-<!--                // alert(currentEnergyRatingArray.filter(e => e !== lname));-->
-<!--            } else {-->
-<!--                currentEnergyRatingArray = currentEnergyRatingArray.filter(e => e !== lname);-->
-<!--                map.setFilter('id2', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);-->
-<!--                map.setFilter('data-driven-circles-labels', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);-->
-<!--                // alert(currentEnergyRatingArray.filter(e => e !== lname));-->
-<!--            }-->
-<!--        }-->
-
-<!--        // function arrayRemove(arr, value) {-->
-<!--        //     return arr.filter(function(ele){-->
-<!--        //         return ele !== value;-->
-<!--        //     });-->
-<!--        //                             alert(result)-->
-<!--        // }-->
-<!--        // var result = arrayRemove(array, 6);-->
-
-<!--        // Bind function to onclick event for checkbox-->
-<!--        // document.getElementById('DCB').onclick = function() {-->
-<!--        //     // access properties using this keyword-->
-<!--        //     if ( this.checked ) {-->
-<!--        //             map.setFilter('id2', ['in', 'current_energy_rating', ...['A', 'B', 'C', 'D', 'E', 'F', 'G']]);-->
-<!--        //         alert( currentEnergyRatingArray.value );-->
-<!--        //     } else {-->
-<!--        //             map.setFilter('id2', ['in', 'current_energy_rating', ...['A', 'B', 'C', 'E', 'F', 'G']]);-->
-<!--        //     }-->
-<!--        // };-->
-
-
-<!--    </script>-->
+    <script type="text/javascript" src="js/ENBS.js" ></script>
 </div>
 <div class='map-overlay'>
-    <img src="crested-wm-full-coloura.png" alt="University of Birmingham Logo">
+    <img src="images/crested-wm-full-coloura.png" alt="University of Birmingham Logo">
 </div>
+
+<!--from https://www.ons.gov.uk/peoplepopulationandcommunity/housing/articles/energyefficiencyofhousinginenglandandwales/2021-->
+<!--<div class="map-overlay" >-->
+<!--<svg id="key" aria-hidden="true" width="210" height="75">-->
+<!--    <g id="horiz" transform="translate(15,35)" fill="none" font-size="10" font-family="sans-serif" text-anchor="middle">-->
+<!--        <text id="currVal" x="118.83495145631069" y="-15" fill="#000" style="opacity: 1;">68</text>-->
+<!--        <rect class="blocks" height="8" x="0" width="34.95145631067961" style="opacity: 0.8; fill: rgb(233, 39, 48);"></rect>-->
+<!--        <rect class="blocks" height="8" x="34.95145631067961" width="31.456310679611654" style="opacity: 0.8; fill: rgb(240, 112, 47);"></rect>-->
+<!--        <rect class="blocks" height="8" x="66.40776699029126" width="27.96116504854369" style="opacity: 0.8; fill: rgb(246, 174, 53);"></rect>-->
+<!--        <rect class="blocks" height="8" x="94.36893203883496" width="24.466019417475735" style="opacity: 0.8; fill: rgb(241, 236, 55);"></rect>-->
+<!--        <rect class="blocks" height="8" x="118.83495145631069" width="20.97087378640775" style="opacity: 0.8; fill: rgb(149, 202, 83);"></rect>-->
+<!--        <rect class="blocks" height="8" x="139.80582524271844" width="19.223300970873794" style="opacity: 0.8; fill: rgb(46, 169, 73);"></rect>-->
+<!--        <rect class="blocks" height="8" x="159.02912621359224" width="20.970873786407765" style="opacity: 0.8; fill: rgb(10, 134, 71);"></rect>-->
+<!--        <path class="domain" stroke="#000" d="M0.5,15V0.5H180.5V15"></path>-->
+<!--        <g class="tick" opacity="1" transform="translate(0,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">0</text>-->
+<!--        </g>-->
+<!--        <g class="tick" opacity="1" transform="translate(34.95145631067961,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">20</text></g>-->
+<!--        <g class="tick" opacity="1" transform="translate(66.40776699029126,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">38</text></g>-->
+<!--        <g class="tick" opacity="1" transform="translate(94.36893203883496,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">54</text></g>-->
+<!--        <g class="tick" opacity="1" transform="translate(118.83495145631069,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">68</text>-->
+<!--        </g>-->
+<!--        <g class="tick" opacity="1" transform="translate(139.80582524271844,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">80</text></g>-->
+<!--        <g class="tick" opacity="1" transform="translate(159.02912621359224,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">91</text></g>-->
+<!--        <g class="tick" opacity="1" transform="translate(180,0)">-->
+<!--            <line stroke="#000" y2="15" x1="0.5" x2="0.5"></line>-->
+<!--            <text fill="#000" y="18" x="0.5" dy="0.71em">103</text>-->
+<!--        </g>-->
+<!--        <line id="currLine" x1="118.83495145631069" x2="118.83495145631069" y1="-10" y2="8" stroke-width="2px" stroke="#000" opacity="0" style="opacity: 1;"></line>-->
+<!--    </g>-->
+<!--</svg>-->
+<!--</div>-->
+
+
+
+
+
+<!--<div class="map-overlay-2">-->
+<!--  <p><label><input type="checkbox" id="carboncheckbox" value="true" onclick="toggleLayer('carbon')" checked>Show Layer</label></p>-->
+<!--  <select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
+<!--      <option value="total_emissions_grade" selected>Total Emission Grade</option>-->
+<!--      <option value="car_emissions_grade">Car Emissions Grade</option>-->
+<!--      <option value="van_grade">Van Emissions Grade</option>-->
+<!--      <option value="gas_emissions_grade">Gas Emissions Grade</option>-->
+<!--      <option value="elec_emissions_grade">Electricity Emissions Grade</option>-->
+<!--      <option value="other_heating_grade">Other Heating Grade</option>-->
+<!--      <option value="flights_grade">Flights Emissions Grade</option>-->
+<!--      <option value="consumption_grade">Goods & Services Grade</option>-->
+<!--      <option value="cars_percap_grade">Cars per person Grade</option>-->
+<!--      <option value="km_percap_grade">km driven per person Grade</option>-->
+<!--      <option value="T2W_Car_grade">Travel to Work (Car) Grade</option>-->
+<!--      <option value="T2W_Cycle_grade">Travel to Work (Bicycle) Grade</option>-->
+<!--      <option value="T2W_Bus_grade">Travel to Work (Bus) Grade</option>-->
+<!--      <option value="T2W_Train_grade">Travel to Work (Train) Grade</option>-->
+<!--      <option value="T2W_Foot_grade">Travel to Work (Foot) Grade</option>-->
+<!--      <option value="EPCScore">EPC Average Score</option>-->
+<!--      <option value="low_energy_light">% homes with low energy lights</option>-->
+<!--      <option value="floor_area_avg">Average home floor area (m2)</option>-->
+<!--      <option value="SOAC11NM">LSOA Area Classification</option>-->
+<!--  </select>-->
+<!--  <div id="layerdesc"><p>Estimated average annual carbon footprint per person for each LSOA. Based on a mix of local and national data. Each area has a grade from A+ (low emissions) to F- (high emissions) in comparison to the England average. See the popup report for more details. </p></div>-->
+
+<!--</div>-->
 
 </body>
 </html>
