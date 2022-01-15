@@ -19,7 +19,7 @@ var draw = new MapboxDraw({
 
 map.addControl(draw, 'top-left');
 
-map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
 map.addControl(
     new MapboxGeocoder({
@@ -379,59 +379,6 @@ switchlayer = function (lname) {
     }
 }
 
-let currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'no epc'];
-
-switchvis = function (lname) {
-    if (document.getElementById(lname + "CB").checked) {
-        currentEnergyRatingArray.push(lname);
-        map.setFilter('id2', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);
-        map.setFilter('data-driven-circles-labels', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    } else {
-        currentEnergyRatingArray = currentEnergyRatingArray.filter(e => e !== lname);
-        map.setFilter('id2', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);
-        map.setFilter('data-driven-circles-labels', ['in', 'current_energy_rating', ...currentEnergyRatingArray]);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    }
-}
-let currentTenureArray = ['owner-occupied',
-    'rental (social)',
-    'rental (private)',
-    'unknown',
-    'not defined new build',
-    'no epc',
-    'no data'];
-
-switchvisTenure = function (lname) {
-    if (document.getElementById(lname + "Tenure").checked) {
-        currentTenureArray.push(lname);
-        map.setFilter('id2', ['in', 'tenure', ...currentTenureArray]);
-        map.setFilter('data-driven-circles-labels', ['in', 'tenure', ...currentTenureArray]);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    } else {
-        currentTenureArray = currentTenureArray.filter(e => e !== lname);
-        map.setFilter('id2', ['in', 'tenure', ...currentTenureArray]);
-        map.setFilter('data-driven-circles-labels', ['in', 'tenure', ...currentTenureArray]);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    }
-}
-
-// let currentBromfordArray = ['0', 'bromford'];
-
-switchBromford = function (lname) {
-    if (document.getElementById(lname + "CB").checked) {
-        // currentBromfordArray.push(lname);
-        map.setFilter('id2', ['in', 'bromford', 'bromford']);
-        map.setFilter('data-driven-circles-labels', ['in', 'bromford', 'bromford']);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    } else {
-        // currentBromfordArray = currentBromfordArray.filter(e => e !== lname);
-        map.setFilter('id2', ['in', 'bromford', ...['0', 'bromford']]);
-        map.setFilter('data-driven-circles-labels', ['in', 'bromford', ...['0', 'bromford']]);
-        // alert(currentEnergyRatingArray.filter(e => e !== lname));
-    }
-}
-
 // function arrayRemove(arr, value) {
 //     return arr.filter(function(ele){
 //         return ele !== value;
@@ -451,22 +398,100 @@ switchBromford = function (lname) {
 //     }
 // };
 
-// map.on('click', function(e) {
-//   var features = map.queryRenderedFeatures(e.point, {
-//     layers: ['id2'] // replace this with the name of the layer
-//   });
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['id2'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(e.lngLat)
+    .setHTML('' +
+        '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
+        '<p>' + feature.properties.tenure + '</p>' +
+        '<p>' + feature.properties.WD21NM + '</p>')
+       .addTo(map);
+});
+
+var tenureShowList = ['owner-occupied',
+    'rental (social)',
+    'rental (private)',
+    'unknown',
+    'not defined new build',
+    'no data',
+    'no epc'];
+
+var epcShowList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'no epc'];
+var bromfordShowList = ['0', 'bromford'];
+
+
+document.getElementById('bromfordCB').addEventListener('change', function() {
+if (this.checked) {
+    bromfordShowList = ['bromford']
+} else { bromfordShowList = ['0', 'bromford']
+}})
+
+console.log(tenureShowList, epcShowList, bromfordShowList);
+
+
+// let tenureShowList;
+document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bromfordCB"]').forEach(function (chk) {
+    chk.addEventListener('change', function () {
+        tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
+        epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
+
+        console.log(tenureShowList, epcShowList, bromfordShowList)
+
+        var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
+        var tenureFilter = ['in', 'tenure', ...tenureShowList];
+        var bromfordFilter = ['in', 'bromford', ...bromfordShowList];
+
+        var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
+        map.setFilter('id2', combinedFilter);
+        map.setFilter('data-driven-circles-labels', combinedFilter);
+    });
+});
+
+
+// document.getElementsByName('epcRatingCBs').forEach(function(chk){
+//     chk.addEventListener('change', function() {
+//         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
+//         console.log(tenureShowList, epcShowList)
+//         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
+//         var tenureFilter = ['in', 'tenure', ...tenureShowList];
 //
-//   if (!features.length) {
-//     return;
-//   }
-//
-//   var feature = features[0];
-//
-//   var popup = new mapboxgl.Popup({ offset: [0, -15] })
-//     .setLngLat(e.lngLat)
-//     .setHTML('' +
-//         '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
-//         '<p>' + feature.properties.tenure + '</p>' +
-//         '<p>' + feature.properties.WD21NM + '</p>')
-//        .addTo(map);
+//         var combinedFilter = ["all", epcRatingFilter, tenureFilter];
+//         map.setFilter('id2', combinedFilter);
+//     });
 // });
+// console.log(tenureShowList)
+
+// function getUniqueFeatures(features, comparatorProperty) {
+// const uniqueIds = new Set();
+// const uniqueFeatures = [];
+// for (const feature of features) {
+// const id = feature.properties[comparatorProperty];
+// if (!uniqueIds.has(id)) {
+// uniqueIds.add(id);
+// uniqueFeatures.push(feature);
+// }
+// }
+// return uniqueFeatures;
+// }
+
+// var new_Filter = ["all",["==", 'damage', 0],[">=", 'senior_population', 20]];
+// map.setFilter('terrain-data-layer', new_Filter);
+
+// var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
+// var tenureFilter = ['in', 'tenure', ...tenureShowList];
+//
+// var combinedFilter = ["all", epcRatingFilter, tenureFilter];
+// map.setFilter('id2', combinedFilter);
+
+
+

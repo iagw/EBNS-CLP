@@ -72,10 +72,11 @@
             margin:10px 0 0 10px;
         }
 
+
         .map-overlay {
             position: absolute;
-            bottom: 35px;
-            left: 10px;
+            bottom: 30px;
+            right: 10px;
             background: rgba(255, 255, 255, 0.9);'
         margin-left: 10px;
             font-family: Arial, sans-serif;
@@ -171,12 +172,6 @@
             margin-bottom: 10px;
         }
 
-        .map-overlay-2 fieldset {
-            border: none;
-            padding: 0;
-            margin: 10px 0 10px;
-        }
-
         .map-overlay-inner fieldset {
             border: none;
             padding: 0;
@@ -194,81 +189,105 @@
 <body>
 <div id="map"></div>
 <div class='map-overlay-2'>
-    <fieldset>
-        <!--        <legend>Contact Details</legend>-->
-        <legend class="categoryLabelFirst">Boundary Layers</legend>
+    <label class="categoryLabelFirst">Boundary Layers</label>
+    <div>
+        <div>
+            <input type="checkbox" id="Ward boundariesCB" value="Ward boundaries"
+                   onchange="switchlayer('Ward boundaries')" />
+            <label for="Ward boundariesCB">Ward boundaries</label>
+        </div>
+        <div>
+            <input type="checkbox" id="LSOA boundariesCB" value="LSOA boundaries"
+                   onchange="switchlayer('LSOA boundaries')" />
+            <label for="LSOA boundariesCB">LSOA boundaries</label>
+        </div>
+        <div>
+            <input type="checkbox" id="bromfordCB" value="bromford"
+                   onchange="switchBromford('bromford')" />
+            <label for="bromfordCB">Bromford</label>
+        </div>
+<!--        <div>-->
+<!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
+<!--            <label for="no epcTenure">no epc</label>-->
+<!--        </div>-->
+
+        <div>
+                <input type="checkbox" id="no epcCB" value="no epc" onchange="switchvis('no epc')" checked/>
+                <label for="no epcCB">valid epc</label>
+            </div>
+
+        <label class="categoryLabelOthers">Tenure</label>
+        <div>
+            <input type="checkbox" id="owner-occupiedTenure"
+                   value="owner-occupied" onchange="switchvisTenure('owner-occupied')" checked/>
+            <label for="owner-occupiedTenure">owner-occupied</label>
+        </div>
+        <div>
+            <input type="checkbox" id="rental (social)Tenure"
+                   value="rental (social)" onchange="switchvisTenure('rental (social)')" checked/>
+            <label for="rental (social)Tenure">rental (social)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="rental (private)Tenure"
+                   value="rental (private)" onchange="switchvisTenure('rental (private)')" checked/>
+            <label for="rental (private)Tenure">rental (private)</label>
+        </div>
+        <div>
+            <input type="checkbox" id="unknownTenure" value="unknown" onchange="switchvisTenure('unknown')" checked/>
+            <label for="unknownTenure">unknown</label>
+        </div>
+        <div>
+            <input type="checkbox" id="not defined new buildTenure"
+                   value="not defined new build" onchange="switchvisTenure('not defined new build')" checked/>
+            <label for="not defined new buildTenure">not defined new build</label>
+        </div>
+        <div>
+            <input type="checkbox" id="no dataTenure" value="no data" onchange="switchvisTenure('no data')" checked/>
+            <label for="no dataTenure">no data</label>
+        </div>
+
+
+        <label class="categoryLabelOthers">Current EPC Rating</label>
         <div>
             <div>
-                <input type="checkbox" id="Ward boundariesCB" value="Ward boundaries"
-                       onchange="switchlayer('Ward boundaries')" />
-                <label for="Ward boundariesCB">Ward boundaries</label>
+                <input type="checkbox" id="ACB" value="A" onchange="switchvis('A')" checked/>
+                <label for="ACB">A</label>
             </div>
             <div>
-                <input type="checkbox" id="LSOA boundariesCB" value="LSOA boundaries"
-                       onchange="switchlayer('LSOA boundaries')" />
-                <label for="LSOA boundariesCB">LSOA boundaries</label>
+                <input type="checkbox" id="BCB" value="B" onchange="switchvis('B')" checked/>
+                <label for="BCB">B</label>
             </div>
             <div>
-                <input type="checkbox" id="bromfordCB" name="bromfordCB" value="bromford"/>
-                <label for="bromfordCB">Bromford</label><br>
-                <!--                <input hidden type="checkbox" id="notbromfordCB" name="bromfordCB" value="0" checked/>-->
-                <!--                <label hidden for="notbromfordCB">Bromford</label>-->
+                <input type="checkbox" id="CCB" value="C" onchange="switchvis('C')" checked/>
+                <label for="CCB">C</label>
             </div>
-            <!--        <div>-->
-            <!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
-            <!--            <label for="no epcTenure">no epc</label>-->
-            <!--        </div>-->
-
-            <fieldset>
-                <legend class="categoryLabelOthers">Tenure</legend>
-                <div>
-                    <input type="checkbox" id="ownerOccupiedCB" name="tenureCBs" value="owner-occupied" checked/>
-                    <label for="ownerOccupiedCB">owner-occupied</label><br>
-                    <input type="checkbox" id="rentalSocialCB" name="tenureCBs" value="rental (social)" checked/>
-                    <label for="rentalSocialCB">rental (social)</label><br>
-                    <input type="checkbox" id="rentalPrivateCB" name="tenureCBs" value="rental (private)" checked/>
-                    <label for="rentalPrivateCB">rental (private)</label><br>
-                    <input type="checkbox" id="unknownCB" name="tenureCBs" value="unknown" checked/>
-                    <label for="unknownCB">unknown</label><br>
-                    <input type="checkbox" id="notDefinedNewBuildCB" name="tenureCBs" value="not defined new build" checked/>
-                    <label for="notDefinedNewBuildCB">not defined new build</label><br>
-                    <input type="checkbox" id="noDataCB" name="tenureCBs" value="no data" checked/>
-                    <label for="noDataCB">no data</label><br>
-                    <input hidden type="checkbox" id="no epcCB" name="tenureCBs" value="no epc" checked/>
-                    <label hidden for="no epcCB">no epc</label>
-                </div>
-            </fieldset>
-            <legend class="categoryLabelOthers">Current EPC Rating</legend>
             <div>
-                <input type="checkbox" id="no epcCB" name="epcRatingCBs" value="no epc" checked/>
-                <label for="no epcCB">no epc</label><br>
-                <input type="checkbox" id="ACB" name="epcRatingCBs" value="A" checked/>
-                <label for="ACB">A</label><br>
-                <input type="checkbox" id="BCB" name="epcRatingCBs" value="B" checked/>
-                <label for="BCB">B</label><br>
-                <input type="checkbox" id="CCB" name="epcRatingCBs" value="C" checked/>
-                <label for="CCB">C</label><br>
-                <input type="checkbox" id="DCB" name="epcRatingCBs" value="D" checked/>
-                <label for="DCB">D</label><br>
-                <input type="checkbox" id="ECB" name="epcRatingCBs" value="E" checked/>
-                <label for="ECB">E</label><br>
-                <input type="checkbox" id="FCB" name="epcRatingCBs" value="F" checked/>
-                <label for="FCB">F</label><br>
-                <input type="checkbox" id="GCB" name="epcRatingCBs" value="G" checked/>
-                <label for="GCB">G</label><br>
+                <input type="checkbox" id="DCB" value="D" onchange="switchvis('D')" checked/>
+                <label for="DCB">D</label>
             </div>
-            <!--            <div><select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
-            <!--                <option value="total_emissions_grade" selected>Total Emission Grade</option>-->
-            <!--                <option value="car_emissions_grade">Car Emissions Grade</option>-->
-            <!--                <option value="van_grade">Van Emissions Grade</option>-->
-            <!--            </div>-->
+            <div>
+                <input type="checkbox" id="ECB" value="E" onchange="switchvis('E')" checked/>
+                <label for="ECB">E</label>
+            </div>
+            <div>
+                <input type="checkbox" id="FCB" value="F" onchange="switchvis('F')" checked/>
+                <label for="FCB">F</label>
+            </div>
+            <div>
+                <input type="checkbox" id="GCB" value="G" onchange="switchvis('G')" checked/>
+                <label for="GCB">G</label>
+            </div>
+<!--            <div><select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
+<!--                <option value="total_emissions_grade" selected>Total Emission Grade</option>-->
+<!--                <option value="car_emissions_grade">Car Emissions Grade</option>-->
+<!--                <option value="van_grade">Van Emissions Grade</option>-->
+<!--            </div>-->
         </div>
-    </fieldset>
-</div>
-<script type="text/javascript" src="js/ENBS.js" ></script>
+    </div>
+    <script type="text/javascript" src="ENBS.js" ></script>
 </div>
 <div class='map-overlay'>
-    <img src="images/crested-wm-full-coloura.png" alt="University of Birmingham Logo">
+    <img src="../images/crested-wm-full-coloura.png" alt="University of Birmingham Logo">
 </div>
 
 <!--from https://www.ons.gov.uk/peoplepopulationandcommunity/housing/articles/energyefficiencyofhousinginenglandandwales/2021-->
@@ -316,6 +335,36 @@
 <!--</svg>-->
 <!--</div>-->
 
+
+
+
+
+<!--<div class="map-overlay-2">-->
+<!--  <p><label><input type="checkbox" id="carboncheckbox" value="true" onclick="toggleLayer('carbon')" checked>Show Layer</label></p>-->
+<!--  <select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
+<!--      <option value="total_emissions_grade" selected>Total Emission Grade</option>-->
+<!--      <option value="car_emissions_grade">Car Emissions Grade</option>-->
+<!--      <option value="van_grade">Van Emissions Grade</option>-->
+<!--      <option value="gas_emissions_grade">Gas Emissions Grade</option>-->
+<!--      <option value="elec_emissions_grade">Electricity Emissions Grade</option>-->
+<!--      <option value="other_heating_grade">Other Heating Grade</option>-->
+<!--      <option value="flights_grade">Flights Emissions Grade</option>-->
+<!--      <option value="consumption_grade">Goods & Services Grade</option>-->
+<!--      <option value="cars_percap_grade">Cars per person Grade</option>-->
+<!--      <option value="km_percap_grade">km driven per person Grade</option>-->
+<!--      <option value="T2W_Car_grade">Travel to Work (Car) Grade</option>-->
+<!--      <option value="T2W_Cycle_grade">Travel to Work (Bicycle) Grade</option>-->
+<!--      <option value="T2W_Bus_grade">Travel to Work (Bus) Grade</option>-->
+<!--      <option value="T2W_Train_grade">Travel to Work (Train) Grade</option>-->
+<!--      <option value="T2W_Foot_grade">Travel to Work (Foot) Grade</option>-->
+<!--      <option value="EPCScore">EPC Average Score</option>-->
+<!--      <option value="low_energy_light">% homes with low energy lights</option>-->
+<!--      <option value="floor_area_avg">Average home floor area (m2)</option>-->
+<!--      <option value="SOAC11NM">LSOA Area Classification</option>-->
+<!--  </select>-->
+<!--  <div id="layerdesc"><p>Estimated average annual carbon footprint per person for each LSOA. Based on a mix of local and national data. Each area has a grade from A+ (low emissions) to F- (high emissions) in comparison to the England average. See the popup report for more details. </p></div>-->
+
+<!--</div>-->
 
 </body>
 </html>

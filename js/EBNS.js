@@ -15,6 +15,15 @@ var map = new mapboxgl.Map({
     center: [-1.8040, 52.4766],
     zoom: 11,
 });
+var draw = new MapboxDraw({
+    displayControlsDefault: false,
+    // boxSelect: true,
+    controls: {
+        polygon: true,
+        trash: true
+    }
+});
+map.addControl(draw, 'top-left');
 map.addControl(new mapboxgl.NavigationControl(), 'bottom-left');
 map.addControl(new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -28,15 +37,15 @@ map.addControl(new MapboxGeocoder({
 map.on('load', function () {
     map.addSource('points', {
         'type': 'geojson',
-        'data': './EBNS_epcs_compact_4326.geojson'
+        'data': './data/EBNS_epcs_compact_4326_part.geojson'
     });
     map.addSource('wards', {
         'type': 'geojson',
-        'data': './CLP-wards_4326.geojson'
+        'data': './data/CLP-wards_4326.geojson'
     });
     map.addSource('lsoas', {
         'type': 'geojson',
-        'data': './LSOAs_4326.geojson'
+        'data': './data/LSOAs_4326.geojson'
     });
     // from https://docs.mapbox.com/mapbox-gl-js/example/change-building-color-based-on-zoom-level/
     map.setPaintProperty('building', 'fill-color', [
@@ -50,7 +59,7 @@ map.on('load', function () {
         '#D9D3C9',
         // When zoom is 18 or higher, buildings will be lighter.
         18,
-        '#D9D3C9'
+        '#f8f3eb'
     ]);
     map.setPaintProperty('building', 'fill-opacity', [
         'interpolate',
@@ -62,7 +71,7 @@ map.on('load', function () {
         0.5,
         // When zoom is 18 or higher, buildings will be 100% opaque.
         18,
-        1
+        0.7
     ]);
     //         map.addLayer(
     //             {
@@ -183,21 +192,26 @@ map.on('load', function () {
                 ],
                 "A",
                 "hsl(214,45%,49%)",
+                // "hsl(214,45%,49%)", // previous
                 "B",
-                "hsl(195,59%,79%)",
+                "hsl(150,86%,28%)",
+                // "hsl(195,59%,79%)", // previous
                 "C",
-                // "hsl(44,98%,78%)",
-                "hsl(30,98%,69%)",
+                "hsl(87,53%,56%)",
+                // "hsl(30,98%,69%)", // previous
                 "D",
-                // "hsl(30,98%,69%)",
-                "hsl(14,89%,61%)",
+                "hsl(58,87%,58%)",
+                // "hsl(14,89%,61%)", // previous
                 "E",
-                "hsl(3,69%,50%)",
+                "hsl(38,91%,59%)",
+                // "hsl(3,69%,50%)", // previous
                 // "hsl(14,89%,61%)",
                 "F",
-                "hsl(3,69%,50%)",
+                "hsl(20,87%,56%)",
+                // "hsl(3,69%,50%)", // previous
                 "G",
-                "hsl(346,100%,32%)",
+                "hsl(357,82%,53%)",
+                // "hsl(346,100%,32%)", // previous
                 "hsla(0, 0%, 0%, 0)",
             ],
             'circle-stroke-color': '#7d807d',
@@ -209,7 +223,7 @@ map.on('load', function () {
                     [18, 2],
                 ]
             },
-            'circle-opacity': 0.7,
+            'circle-opacity': 0.8,
         }
     });
     map.addLayer({
@@ -262,6 +276,26 @@ map.on('load', function () {
             },
         }
     });
+    map.on('draw.create', function (e) {
+        var userPolygon = e.features[0];
+        // if (userPolygon) {
+        //     console.log(userPolygon)
+        // }
+        // var features = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['id2'] });
+        // var ptsWithin = map.queryRenderedFeatures(userPolygon, { layers: ['id2'] });
+        var ptsWithin = turf.pointsWithinPolygon('id2', userPolygon.toGeoJSON);
+        console.log(ptsWithin);
+        // var filter = features.reduce(function(memo, feature) {
+        //
+        //     if (! (undefined === turf.intersect(feature, userPolygon))) {
+        //         // only add the property, if the feature intersects with the polygon drawn by the user
+        //
+        //         memo.push(feature.properties.uprn);
+        //     }
+        //     return memo;
+        // }, ['in', 'uprn']);
+        // map.setFilter("counties-highlighted", filter);
+    });
 });
 // var toggleableLayerIds = [ 'Ward boundaries', 'LSOA boundaries' ];
 //
@@ -295,7 +329,6 @@ map.on('load', function () {
 // map.on("click", "id2", function(e) {
 //     map.setFilter("id2", ['in', 'current_energy_rating', getRandomCurrentEnergyRating()]);
 // });
-var currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N'];
 // function getRandomCurrentEnergyRating() {
 //     const randomElement = currentEnergyRatingArray[Math.floor(Math.random() * currentEnergyRatingArray.length)];
 //     return randomElement;
@@ -308,6 +341,7 @@ switchlayer = function (lname) {
         map.setLayoutProperty(lname, 'visibility', 'none');
     }
 };
+var currentEnergyRatingArray = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'no epc'];
 switchvis = function (lname) {
     if (document.getElementById(lname + "CB").checked) {
         currentEnergyRatingArray.push(lname);
@@ -319,6 +353,42 @@ switchvis = function (lname) {
         currentEnergyRatingArray = currentEnergyRatingArray.filter(function (e) { return e !== lname; });
         map.setFilter('id2', __spreadArray(['in', 'current_energy_rating'], currentEnergyRatingArray, true));
         map.setFilter('data-driven-circles-labels', __spreadArray(['in', 'current_energy_rating'], currentEnergyRatingArray, true));
+        // alert(currentEnergyRatingArray.filter(e => e !== lname));
+    }
+};
+var currentTenureArray = ['owner-occupied',
+    'rental (social)',
+    'rental (private)',
+    'unknown',
+    'not defined new build',
+    'no epc',
+    'no data'];
+switchvisTenure = function (lname) {
+    if (document.getElementById(lname + "Tenure").checked) {
+        currentTenureArray.push(lname);
+        map.setFilter('id2', __spreadArray(['in', 'tenure'], currentTenureArray, true));
+        map.setFilter('data-driven-circles-labels', __spreadArray(['in', 'tenure'], currentTenureArray, true));
+        // alert(currentEnergyRatingArray.filter(e => e !== lname));
+    }
+    else {
+        currentTenureArray = currentTenureArray.filter(function (e) { return e !== lname; });
+        map.setFilter('id2', __spreadArray(['in', 'tenure'], currentTenureArray, true));
+        map.setFilter('data-driven-circles-labels', __spreadArray(['in', 'tenure'], currentTenureArray, true));
+        // alert(currentEnergyRatingArray.filter(e => e !== lname));
+    }
+};
+// let currentBromfordArray = ['0', 'bromford'];
+switchBromford = function (lname) {
+    if (document.getElementById(lname + "CB").checked) {
+        // currentBromfordArray.push(lname);
+        map.setFilter('id2', ['in', 'bromford', 'bromford']);
+        map.setFilter('data-driven-circles-labels', ['in', 'bromford', 'bromford']);
+        // alert(currentEnergyRatingArray.filter(e => e !== lname));
+    }
+    else {
+        // currentBromfordArray = currentBromfordArray.filter(e => e !== lname);
+        map.setFilter('id2', __spreadArray(['in', 'bromford'], ['0', 'bromford'], false));
+        map.setFilter('data-driven-circles-labels', __spreadArray(['in', 'bromford'], ['0', 'bromford'], false));
         // alert(currentEnergyRatingArray.filter(e => e !== lname));
     }
 };
@@ -339,3 +409,22 @@ switchvis = function (lname) {
 //             map.setFilter('id2', ['in', 'current_energy_rating', ...['A', 'B', 'C', 'E', 'F', 'G']]);
 //     }
 // };
+// map.on('click', function(e) {
+//   var features = map.queryRenderedFeatures(e.point, {
+//     layers: ['id2'] // replace this with the name of the layer
+//   });
+//
+//   if (!features.length) {
+//     return;
+//   }
+//
+//   var feature = features[0];
+//
+//   var popup = new mapboxgl.Popup({ offset: [0, -15] })
+//     .setLngLat(e.lngLat)
+//     .setHTML('' +
+//         '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
+//         '<p>' + feature.properties.tenure + '</p>' +
+//         '<p>' + feature.properties.WD21NM + '</p>')
+//        .addTo(map);
+// });
