@@ -8,7 +8,7 @@ var map = new mapboxgl.Map({
     zoom: 11,
 });
 
-var draw = new MapboxDraw({
+const draw = new MapboxDraw({
     displayControlsDefault: false,
     // boxSelect: true,
     controls: {
@@ -17,9 +17,14 @@ var draw = new MapboxDraw({
     }
 });
 
-map.addControl(draw, 'top-left');
+// map.addControl(draw, 'top-left');
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+map.addControl(new mapboxgl.ScaleControl({
+  maxWidth: 80,
+  unit: 'metric'
+}),'bottom-right');
 
 map.addControl(
     new MapboxGeocoder({
@@ -34,10 +39,15 @@ map.addControl(
     })
 );
 
+// const geotestjson = turf.points('./data/EBNS_epcs_compact_4326_part.geojson');
+// window.alert(geotestjson);
+
 map.on('load', () => {
     map.addSource('points', {
         'type': 'geojson',
+        // 'data': './data/EBNS_epcs_compact_4326_part.geojson'
         'data': './data/EBNS_epcs_compact_4326_full.geojson'
+
     });
 
     map.addSource('wards', {
@@ -298,78 +308,95 @@ map.on('load', () => {
             },
         }
     });
-    map.on('draw.create', function(e){
 
-        const userPolygon = e.features[0];
-
-        // if (userPolygon) {
-        //     console.log(userPolygon)
-        // }
-
-        // var features = map.queryRenderedFeatures([southWestPointPixel, northEastPointPixel], { layers: ['id2'] });
-        // var ptsWithin = map.queryRenderedFeatures(userPolygon, { layers: ['id2'] });
-
-        var ptsWithin = turf.pointsWithinPolygon('id2', userPolygon.toGeoJSON);
-        console.log(ptsWithin)
-
-
-
-        // var filter = features.reduce(function(memo, feature) {
-        //
-        //     if (! (undefined === turf.intersect(feature, userPolygon))) {
-        //         // only add the property, if the feature intersects with the polygon drawn by the user
-        //
-        //         memo.push(feature.properties.uprn);
-        //     }
-        //     return memo;
-        // }, ['in', 'uprn']);
-
-        // map.setFilter("counties-highlighted", filter);
-
-    });
-
-
-});
-
-// var toggleableLayerIds = [ 'Ward boundaries', 'LSOA boundaries' ];
-//
-// for (var i = 0; i < toggleableLayerIds.length; i++) {
-//     var id = toggleableLayerIds[i];
-//
-//     var link = document.createElement('a');
-//     link.href = '#';
-//     link.className = 'active';
-//     link.textContent = id;
-//
-//     link.onclick = function (e) {
-//         var clickedLayer = this.textContent;
-//         e.preventDefault();
-//         e.stopPropagation();
-//
-//         var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-//
-//         if (visibility === 'visible') {
-//             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-//             this.className = '';
-//         } else {
-//             this.className = 'active';
-//             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-//         }
-//     };
-//
-//     var layers = document.getElementById('menu');
-//     layers.appendChild(link);
-// }
-
-// map.on("click", "id2", function(e) {
-//     map.setFilter("id2", ['in', 'current_energy_rating', getRandomCurrentEnergyRating()]);
+//     map.addSource('pointsInUserPolygon', {
+//   type: 'geojson',
+//   data: {
+//     type: 'FeatureCollection',
+//     features: []
+//   }
 // });
 
 
-// function getRandomCurrentEnergyRating() {
-//     const randomElement = currentEnergyRatingArray[Math.floor(Math.random() * currentEnergyRatingArray.length)];
-//     return randomElement;
+// map.on('draw.create', featuresInArea);
+// map.on('draw.delete', featuresInArea);
+// map.on('draw.update', featuresInArea);
+//
+// function featuresInArea(e) {
+// const userPolygon = draw.getAll();
+// if (userPolygon.features.length > 0) {
+// const area = turf.area(userPolygon);
+// const tpoints = turf.points(['id2'])
+// // ptsWithin = map.queryRenderedFeatures(userPolygon, { layers: ['id2'] });
+// // var ptsWithin = turf.pointsWithinPolygon({ layers: ['id2'] }.toGeoJSON, userPolygon);
+// // console.log(turf.points('id2'), turf.polygon(userPolygon))
+//
+// // Restrict the area to 2 decimal points.
+// const rounded_area = Math.round(area * 100) / 100;
+//     console.log(rounded_area)
+//     // console.log(getMode(userPolygon))
+//
+//
+// } else {
+// // answer.innerHTML = '';
+// if (e.type !== 'draw.delete')
+// alert('Click the map to draw a polygon.');
 // }
+// }
+
+    // var feature = turf.points({'source': 'points'});
+    // console.log(feature);
+
+
+
+//     var uniqueFeatures = getUniqueFeatures(features, "icon");
+//
+// uniqueFeatures.forEach(function(feature) {
+//         var prop = feature.properties;
+//         console.log(prop.icon);
+// })
+
+    map.on('idle',function(){
+            // var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
+            var mapLayer = map.getSource('points')
+        console.log(mapLayer)
+            // console.log(mapLayer['features']['properties']['uprn'][0])
+
+
+            map.on('draw.create', function(e) {
+        // const userPolygon = draw.getAll();
+                var userPolygon = e.features[0];
+        var pointtocheck = turf.points([
+            [-1.9097609006719085, 52.462021380049995],
+        ]);
+        var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
+        // var ptsWithin = turf.inside(mapLayer, userPolygon);
+        console.log(ptsWithin);
+    });
+                // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
+    // const oocc = mapLayer.map((feature) => feature.properties.uprn);
+    // map.setFilter('id2', ['in', 'uprn', ...uprn]);
+    });
+
+
+
+
+// let mapLayer;
+//     map.on("sourcedata", function(e) {
+//         if (map.getSource('points') && map.isSourceLoaded('points')) {
+//             console.log('source loaded!');
+//             var mapLayer = map.querySourceFeatures('points');
+//             console.log(mapLayer.length);
+//         }
+//     });
+
+
+    // var marker = new mapboxgl.Marker()
+    //     .setLngLat([-1.9097609006719085, 52.462021380049995])
+    //     .addTo(map);
+
+});
+
 
 switchlayer = function (lname) {
     if (document.getElementById(lname + "CB").checked) {
@@ -379,43 +406,25 @@ switchlayer = function (lname) {
     }
 }
 
-// function arrayRemove(arr, value) {
-//     return arr.filter(function(ele){
-//         return ele !== value;
-//     });
-//                             alert(result)
-// }
-// var result = arrayRemove(array, 6);
-
-// Bind function to onclick event for checkbox
-// document.getElementById('DCB').onclick = function() {
-//     // access properties using this keyword
-//     if ( this.checked ) {
-//             map.setFilter('id2', ['in', 'current_energy_rating', ...['A', 'B', 'C', 'D', 'E', 'F', 'G']]);
-//         alert( currentEnergyRatingArray.value );
-//     } else {
-//             map.setFilter('id2', ['in', 'current_energy_rating', ...['A', 'B', 'C', 'E', 'F', 'G']]);
-//     }
-// };
 
 map.on('click', function(e) {
-  var features = map.queryRenderedFeatures(e.point, {
-    layers: ['id2'] // replace this with the name of the layer
-  });
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['id2'] // replace this with the name of the layer
+    });
 
-  if (!features.length) {
-    return;
-  }
+    if (!features.length) {
+        return;
+    }
 
-  var feature = features[0];
+    var feature = features[0];
 
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(e.lngLat)
-    .setHTML('' +
-        '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
-        '<p>' + feature.properties.tenure + '</p>' +
-        '<p>' + feature.properties.WD21NM + '</p>')
-       .addTo(map);
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(e.lngLat)
+        .setHTML('' +
+            '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
+            '<p>' + feature.properties.tenure + '</p>' +
+            '<p>' + feature.properties.WD21NM + '</p>')
+        .addTo(map);
 });
 
 var tenureShowList = ['owner-occupied',
@@ -431,10 +440,10 @@ var bromfordShowList = ['0', 'bromford'];
 
 
 document.getElementById('bromfordCB').addEventListener('change', function() {
-if (this.checked) {
-    bromfordShowList = ['bromford']
-} else { bromfordShowList = ['0', 'bromford']
-}})
+    if (this.checked) {
+        bromfordShowList = ['bromford']
+    } else { bromfordShowList = ['0', 'bromford']
+    }})
 
 console.log(tenureShowList, epcShowList, bromfordShowList);
 
@@ -456,42 +465,3 @@ document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bro
         map.setFilter('data-driven-circles-labels', combinedFilter);
     });
 });
-
-
-// document.getElementsByName('epcRatingCBs').forEach(function(chk){
-//     chk.addEventListener('change', function() {
-//         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
-//         console.log(tenureShowList, epcShowList)
-//         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
-//         var tenureFilter = ['in', 'tenure', ...tenureShowList];
-//
-//         var combinedFilter = ["all", epcRatingFilter, tenureFilter];
-//         map.setFilter('id2', combinedFilter);
-//     });
-// });
-// console.log(tenureShowList)
-
-// function getUniqueFeatures(features, comparatorProperty) {
-// const uniqueIds = new Set();
-// const uniqueFeatures = [];
-// for (const feature of features) {
-// const id = feature.properties[comparatorProperty];
-// if (!uniqueIds.has(id)) {
-// uniqueIds.add(id);
-// uniqueFeatures.push(feature);
-// }
-// }
-// return uniqueFeatures;
-// }
-
-// var new_Filter = ["all",["==", 'damage', 0],[">=", 'senior_population', 20]];
-// map.setFilter('terrain-data-layer', new_Filter);
-
-// var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
-// var tenureFilter = ['in', 'tenure', ...tenureShowList];
-//
-// var combinedFilter = ["all", epcRatingFilter, tenureFilter];
-// map.setFilter('id2', combinedFilter);
-
-
-
