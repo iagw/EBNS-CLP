@@ -45,8 +45,8 @@ map.addControl(
 map.on('load', () => {
     map.addSource('points', {
         type: 'geojson',
-        data: './data/EBNS_epcs_compact_4326_part.geojson'
-        // 'data': 'data/EBNS_epcs_compact_4326_full.geojson'
+        // data: './data/EBNS_epcs_compact_4326_part.geojson'
+        'data': 'data/EBNS_epcs_compact_4326_full.geojson'
 
     });
 
