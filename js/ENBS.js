@@ -102,7 +102,7 @@ map.on('load', () => {
             'fill-color': [
                 'interpolate',
                 ['linear'],
-                ['get', 'LSOA_epc_g_to_d_and_no_epc_percent_'],
+                ['get', 'LSOA_epc_g_to_d_and_no_epc_percent'],
                 60,'#0e7e58',
                 67,'#2aa45b',
                 74,'#8cbc42',
@@ -450,11 +450,14 @@ map.on('click', function(e) {
     var popup = new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(e.lngLat)
         .setHTML('' +
-            '<h3>'+ feature.properties['LSOA11CD'] + '</h3>' +
-            '<p>' + feature.properties['LSOA_uprn_count'] + ' number of uprns' + '</p>' +
-            '<p>' + feature.properties['LSOA_epc_g_to_d_percent'] + '% of homes with epcs < C' + '</p>' +
-            '<p>' + feature.properties['LSOA_no epc_percent'] + '% of homes without epc' + '</p>' +
-            '<p>' + feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of homes with epc < C or no epc' + '</p>'
+            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<p>' + feature.properties['LSOA_uprn_count'] + ' number of dwellings' + '</p>' +
+            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_count'] + ') ' +
+            feature.properties['LSOA_epc_g_to_d_percent'] + '% of dwellings with epcs G to D' + '</p>' +
+            '<p>' + '(' + feature.properties['LSOA_no epc_count'] + ') ' +
+            feature.properties['LSOA_no epc_percent'] + '% of dwellings without epc' + '</p>' +
+            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_and_no_epc_count'] + ') ' +
+            feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of dwellings with epc G to D or no epc' + '</p>'
         )
         .addTo(map);
 });
@@ -469,29 +472,28 @@ var tenureShowList = ['owner-occupied',
 
 var epcShowList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'no epc'];
 var bromfordShowList = ['0', 'bromford'];
-var lsoaShowList = ['E01009096',
-    'E01009106',
-    'E01009099',
-    'E01009097',
-    'E01009103',
-    'E01009101',
-    'E01009080',
-    'E01009079',
-    'E01009082',
-    'E01009085',
-    'E01009081',
-    'E01009083',
-    'E01009090',
-    'E01009089',
-    'E01009091',
-    'E01009088',
-    'E01009087',
-    'E01009084'
-]
+var lsoaShowList = ['Birmingham 029A',
+    'Birmingham 029B',
+    'Birmingham 029C',
+    'Birmingham 029F',
+    'Birmingham 038A',
+    'Birmingham 038B',
+    'Birmingham 038C',
+    'Birmingham 044A',
+    'Birmingham 038D',
+    'Birmingham 042A',
+    'Birmingham 042B',
+    'Birmingham 042C',
+    'Birmingham 045A',
+    'Birmingham 042D',
+    'Birmingham 042E',
+    'Birmingham 045B',
+    'Birmingham 029D',
+    'Birmingham 029E']
 
 document.getElementById('lsoaListCB').addEventListener('change', function() {
     if (this.checked) {
-                map.setFilter('lsoaChoropleth', ['in', 'LSOA11CD', ...lsoaShowList]);
+                map.setFilter('lsoaChoropleth', ['in', 'LSOA11NM', ...lsoaShowList]);
     } else { map.setFilter('lsoaChoropleth', null)
     }})
 
