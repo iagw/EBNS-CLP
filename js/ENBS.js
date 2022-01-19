@@ -451,9 +451,10 @@ map.on('click', function(e) {
         .setLngLat(e.lngLat)
         .setHTML('' +
             '<h3>'+ feature.properties['LSOA11CD'] + '</h3>' +
-            '<p>' + feature.properties['LSOA_epc_g_to_d_percent'] + '%' + ' of homes with epcs < C' + '</p>' +
-            '<p>' + feature.properties['LSOA_no epc_percent'] + '%' + ' of homes without epc' + '</p>' +
-            '<p>' + feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '%' + ' of homes with epc < C or no epc' + '</p>'
+            '<p>' + feature.properties['LSOA_uprn_count'] + ' number of uprns' + '</p>' +
+            '<p>' + feature.properties['LSOA_epc_g_to_d_percent'] + '% of homes with epcs < C' + '</p>' +
+            '<p>' + feature.properties['LSOA_no epc_percent'] + '% of homes without epc' + '</p>' +
+            '<p>' + feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of homes with epc < C or no epc' + '</p>'
         )
         .addTo(map);
 });
