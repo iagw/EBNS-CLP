@@ -485,7 +485,8 @@ var lsoaShowList = ['E01009096',
     'E01009089',
     'E01009091',
     'E01009088',
-    'E01009087'
+    'E01009087',
+    'E01009084'
 ]
 
 document.getElementById('lsoaListCB').addEventListener('change', function() {
