@@ -22,8 +22,8 @@ const draw = new MapboxDraw({
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
 map.addControl(new mapboxgl.ScaleControl({
-  maxWidth: 80,
-  unit: 'metric'
+    maxWidth: 80,
+    unit: 'metric'
 }),'bottom-right');
 
 map.addControl(
@@ -44,22 +44,29 @@ map.addControl(
 
 map.on('load', () => {
     map.addSource('points', {
-        'type': 'geojson',
-        // 'data': './data/EBNS_epcs_compact_4326_part.geojson'
-        'data': './data/EBNS_epcs_compact_4326_full.geojson'
+        type: 'geojson',
+        data: './data/EBNS_epcs_compact_4326_part.geojson'
+        // 'data': 'data/EBNS_epcs_compact_4326_full.geojson'
 
     });
 
     map.addSource('wards', {
-        'type': 'geojson',
-        'data': './data/CLP-wards_4326.geojson'
+        type: 'geojson',
+        data: './data/CLP-wards_4326.geojson'
     });
 
     map.addSource('lsoas', {
-        'type': 'geojson',
-        'data': './data/LSOAs_4326.geojson'
+        type: 'geojson',
+        data: './data/EBNS_LSOA_epc_4326.geojson',
+        // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
     });
+
+    // map.addSource('currentEnergyRating', {
+    //     'type': 'csv',
+    //     'data': 'data/lsoa_epc_current_energy_rating.csv'
+    // });
     // from https://docs.mapbox.com/mapbox-gl-js/example/change-building-color-based-on-zoom-level/
+
     map.setPaintProperty('building', 'fill-color', [
         'interpolate',
         // Set the exponential rate of change to 0.5
@@ -86,6 +93,28 @@ map.on('load', () => {
         18,
         0.7
     ]);
+
+    map.addLayer({
+        "id": "lsoaChoropleth",
+        "type": "fill",
+        "source": "lsoas",
+        "paint": {
+            'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['get', 'LSOA_epc_g_to_d_and_no_epc_percent_'],
+                60,'#0e7e58',
+                67,'#2aa45b',
+                74,'#8cbc42',
+                81,'#f6cc15',
+                88,'#f2a867',
+                95,'#f17e23',
+                100,'#e31d3e'
+            ],
+            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+            'fill-opacity': 0.7
+        }
+    });
 
 //         map.addLayer(
 //             {
@@ -357,25 +386,25 @@ map.on('load', () => {
 // })
 
     map.on('idle',function(){
-            // var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
-            var mapLayer = map.getSource('points')
-        console.log(mapLayer)
-            // console.log(mapLayer['features']['properties']['uprn'][0])
+        // var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
+        var mapLayer = map.getSource('points')
+        // console.log(mapLayer)
+        // console.log(mapLayer['features']['properties']['uprn'][0])
 
 
-            map.on('draw.create', function(e) {
-        // const userPolygon = draw.getAll();
-                var userPolygon = e.features[0];
-        var pointtocheck = turf.points([
-            [-1.9097609006719085, 52.462021380049995],
-        ]);
-        var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
-        // var ptsWithin = turf.inside(mapLayer, userPolygon);
-        console.log(ptsWithin);
-    });
-                // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
-    // const oocc = mapLayer.map((feature) => feature.properties.uprn);
-    // map.setFilter('id2', ['in', 'uprn', ...uprn]);
+        map.on('draw.create', function(e) {
+            // const userPolygon = draw.getAll();
+            var userPolygon = e.features[0];
+            var pointtocheck = turf.points([
+                [-1.9097609006719085, 52.462021380049995],
+            ]);
+            var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
+            // var ptsWithin = turf.inside(mapLayer, userPolygon);
+            // console.log(ptsWithin);
+        });
+        // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
+        // const oocc = mapLayer.map((feature) => feature.properties.uprn);
+        // map.setFilter('id2', ['in', 'uprn', ...uprn]);
     });
 
 
@@ -409,7 +438,7 @@ switchlayer = function (lname) {
 
 map.on('click', function(e) {
     var features = map.queryRenderedFeatures(e.point, {
-        layers: ['id2'] // replace this with the name of the layer
+        layers: ['lsoaChoropleth'] // replace this with the name of the layer
     });
 
     if (!features.length) {
@@ -421,9 +450,11 @@ map.on('click', function(e) {
     var popup = new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(e.lngLat)
         .setHTML('' +
-            '<h3>'+ feature.properties.current_energy_rating + '</h3>' +
-            '<p>' + feature.properties.tenure + '</p>' +
-            '<p>' + feature.properties.WD21NM + '</p>')
+            '<h3>'+ feature.properties['LSOA11CD'] + '</h3>' +
+            '<p>' + feature.properties['LSOA_epc_g_to_d_percent'] + '%' + ' of homes with epcs < C' + '</p>' +
+            '<p>' + feature.properties['LSOA_no epc_percent'] + '%' + ' of homes without epc' + '</p>' +
+            '<p>' + feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '%' + ' of homes with epc < C or no epc' + '</p>'
+        )
         .addTo(map);
 });
 
@@ -437,15 +468,39 @@ var tenureShowList = ['owner-occupied',
 
 var epcShowList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'no epc'];
 var bromfordShowList = ['0', 'bromford'];
+var lsoaShowList = ['E01009096',
+    'E01009106',
+    'E01009099',
+    'E01009097',
+    'E01009103',
+    'E01009101',
+    'E01009080',
+    'E01009079',
+    'E01009082',
+    'E01009085',
+    'E01009081',
+    'E01009083',
+    'E01009090',
+    'E01009089',
+    'E01009091',
+    'E01009088']
 
-
-document.getElementById('bromfordCB').addEventListener('change', function() {
+document.getElementById('lsoaListCB').addEventListener('change', function() {
     if (this.checked) {
-        bromfordShowList = ['bromford']
-    } else { bromfordShowList = ['0', 'bromford']
+                map.setFilter('lsoaChoropleth', ['in', 'LSOA11CD', ...lsoaShowList]);
+    } else { map.setFilter('lsoaChoropleth', null)
     }})
 
-console.log(tenureShowList, epcShowList, bromfordShowList);
+
+
+
+// document.getElementById('bromfordCB').addEventListener('change', function() {
+//     if (this.checked) {
+//         bromfordShowList = ['bromford']
+//     } else { bromfordShowList = ['0', 'bromford']
+//     }})
+
+// console.log(tenureShowList, epcShowList, bromfordShowList);
 
 
 // let tenureShowList;
@@ -454,7 +509,7 @@ document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bro
         tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
 
-        console.log(tenureShowList, epcShowList, bromfordShowList)
+        // console.log(tenureShowList, epcShowList, bromfordShowList)
 
         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
         var tenureFilter = ['in', 'tenure', ...tenureShowList];
@@ -463,5 +518,6 @@ document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bro
         var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
+
     });
 });
