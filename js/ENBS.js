@@ -17,7 +17,7 @@ const draw = new MapboxDraw({
     }
 });
 
-// map.addControl(draw, 'top-left');
+map.addControl(draw, 'top-left');
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
