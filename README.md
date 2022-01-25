@@ -11,3 +11,9 @@ lat format needed for pointsWithinPolygon
 
 next step - sort out the LSOA data for Thursday, check hover for LSOAs
 parse data into per LSOA datasets similar to Malcolms
+
+Uprn to building
+Experian data
+Community intelligence
+Histogram for buildings
+Click on Experian buildings
