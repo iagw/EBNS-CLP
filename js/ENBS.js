@@ -116,63 +116,65 @@ map.on('load', () => {
         }
     });
 
-//         map.addLayer(
-//             {
-//                 'id': 'id1',
-//                 'type': 'heatmap',
-//                 'source': 'points',
-//                 'maxzoom': 20,
-//                 'paint': {
-// // // increase weight as diameter breast height increases
-// //                     'heatmap-weight': {
-// //                         'property': 'dbh',
-// //                         'type': 'exponential',
-// //                         'stops': [
-// //                             [1, 0],
-// //                             [62, 1]
-// //                         ]
-// //                     },
-// // increase intensity as zoom level increases
-//                     'heatmap-intensity': {
+        map.addLayer(
+            {
+                'id': 'heatMap',
+                'type': 'heatmap',
+                'source': 'points',
+                'maxzoom': 20,
+                'paint': {
+// // increase weight as diameter breast height increases
+//                     'heatmap-weight': {
+//                         'property': 'dbh',
+//                         'type': 'exponential',
 //                         'stops': [
-//                             [11, 1],
-//                             [15, 3]
+//                             [1, 0],
+//                             [62, 1]
 //                         ]
 //                     },
-// // use sequential color palette to use exponentially as the weight increases
-//                     'heatmap-color': [
-//                         'interpolate',
-//                         ['linear'],
-//                         ['heatmap-density'],
-//                         0,
-//                         'rgba(236,222,239,0)',
-//                         0.2,
-//                         'rgb(208,209,230)',
-//                         0.4,
-//                         'rgb(166,189,219)',
-//                         0.6,
-//                         'rgb(103,169,207)',
-//                         0.8,
-//                         'rgb(28,144,153)'
-//                     ],
-// // increase radius as zoom increases
-//                     'heatmap-radius': {
-//                         'stops': [
-//                             [11, 25],
-//                             [15, 40]
-//                         ]
-//                     },
-// // decrease opacity to transition into the circle layer
-//                     'heatmap-opacity': {
-//                         'default': 1,
-//                         'stops': [
-//                             [14, 1],
-//                             [15, 0]
-//                         ]
-//                     }
-//                 }
-//             },
-//         );
+// increase intensity as zoom level increases
+                    'heatmap-intensity': {
+                        'stops': [
+                            [11, 1],
+                            [15, 3]
+                        ]
+                    },
+// use sequential color palette to use exponentially as the weight increases
+                    'heatmap-color': [
+                        'interpolate',
+                        ['linear'],
+                        ['heatmap-density'],
+                        0,
+                        'rgba(236,222,239,0)',
+                        0.2,
+                        'rgb(208,209,230)',
+                        0.4,
+                        'rgb(166,189,219)',
+                        0.6,
+                        'rgb(103,169,207)',
+                        0.8,
+                        'rgb(28,144,153)'
+                    ],
+// increase radius as zoom increases
+                    'heatmap-radius': {
+                        'stops': [
+                            [11, 25],
+                            [15, 40]
+                        ]
+                    },
+// decrease opacity to transition into the circle layer
+                    'heatmap-opacity': {
+                        'default': 1,
+                        'stops': [
+                            [14, .7],
+                            [15, 0]
+                        ]
+                    }
+                }
+            },
+        );
+
+
 
     map.addLayer(
         {
@@ -337,6 +339,8 @@ map.on('load', () => {
             },
         }
     });
+
+
 
 //     map.addSource('pointsInUserPolygon', {
 //   type: 'geojson',
@@ -558,10 +562,12 @@ document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bro
         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
         var tenureFilter = ['in', 'tenure', ...tenureShowList];
         var bromfordFilter = ['in', 'bromford', ...bromfordShowList];
+        var heatMapFilter = ['in', 'current_energy_rating', ...epcShowList];
 
         var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
+        map.setFilter('heatMap', heatMapFilter);
 
     });
 });
