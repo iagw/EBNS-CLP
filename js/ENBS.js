@@ -64,7 +64,7 @@ map.on('load', () => {
     map.addSource('chargepoints', {
         type: 'geojson',
         // data: './data/EBNS_epcs_compact_4326_part.geojson'
-        'data': 'data/NCR-Bham-Cov.geojson'
+        'data': 'data/NCR_Bham_Cov_4326.geojson'
     });
 
     // map.addSource('currentEnergyRating', {
@@ -294,44 +294,41 @@ map.on('load', () => {
         },
     );
 
+
     map.addLayer(
         {
             'id': 'chPoints',
             'type': 'circle',
             'source': 'chargepoints',
-            'minzoom': 12,
+            'minzoom': 10,
             'paint': {
                 // 'circle-radius': 8,
                 'circle-radius': {
                     'type': 'exponential',
                     'stops': [
-                        [11, 3],
+                        [10, 3],
                         [16, 8],
                         [22, 15],
                     ]
                 },
-                'circle-color': [
-
-                    "hsl(262,82%,53%)",
-                    // "hsl(346,100%,32%)", // previous
-                    "hsla(0, 0%, 0%, 0)",
-
-                ],
+                "circle-color": "#913bfb",
 
 
-                'circle-stroke-color': '#7d807d', //'white'
+                'circle-stroke-color': '#ffffff', //'white'
                 // 'circle-stroke-width': 1,
                 'circle-stroke-width': {
                     'type': 'exponential',
                     'stops': [
-                        [11, 0],
-                        [18, 2],
+                        [11, 2],
+                        [18, 6],
                     ]
                 },
                 'circle-opacity': 0.8,
             }
         },
     );
+
+    // console.log({ layers: ['id2']})
 
     map.addLayer({
         'id': 'Ward boundaries',
