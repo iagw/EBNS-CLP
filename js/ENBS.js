@@ -122,63 +122,87 @@ map.on('load', () => {
         }
     });
 
-        map.addLayer(
-            {
-                'id': 'heatMap',
-                'type': 'heatmap',
-                'source': 'points',
-                'maxzoom': 20,
-                'paint': {
-// // increase weight as diameter breast height increases
-//                     'heatmap-weight': {
-//                         'property': 'dbh',
-//                         'type': 'exponential',
-//                         'stops': [
-//                             [1, 0],
-//                             [62, 1]
-//                         ]
-//                     },
-// increase intensity as zoom level increases
-                    'heatmap-intensity': {
-                        'stops': [
-                            [11, 1],
-                            [15, 3]
-                        ]
-                    },
-// use sequential color palette to use exponentially as the weight increases
-                    'heatmap-color': [
-                        'interpolate',
-                        ['linear'],
-                        ['heatmap-density'],
-                        0,
-                        'rgba(236,222,239,0)',
-                        0.2,
-                        'rgb(208,209,230)',
-                        0.4,
-                        'rgb(166,189,219)',
-                        0.6,
-                        'rgb(103,169,207)',
-                        0.8,
-                        'rgb(28,144,153)'
-                    ],
-// increase radius as zoom increases
-                    'heatmap-radius': {
-                        'stops': [
-                            [11, 25],
-                            [15, 40]
-                        ]
-                    },
-// decrease opacity to transition into the circle layer
-                    'heatmap-opacity': {
-                        'default': 1,
-                        'stops': [
-                            [14, .7],
-                            [15, 0]
-                        ]
-                    }
-                }
-            },
-        );
+//     map.addLayer(
+//         {
+//             'id': 'heatMap',
+//             'type': 'heatmap',
+//             'source': 'points',
+//             'maxzoom': 20,
+//             'paint': {
+// // // increase weight as diameter breast height increases
+// //                     'heatmap-weight': {
+// //                         'property': 'dbh',
+// //                         'type': 'exponential',
+// //                         'stops': [
+// //                             [1, 0],
+// //                             [62, 1]
+// //                         ]
+// //                     },
+// // increase intensity as zoom level increases
+//                 'heatmap-intensity': {
+//                     'stops': [
+//                         [11, 1],
+//                         [15, 3]
+//                     ]
+//                 },
+// // use sequential color palette to use exponentially as the weight increases
+//
+//                 'heatmap-color': [
+//                     "interpolate",
+//                     ["linear", 1],
+//                     ["heatmap-density"],
+//                     0,
+//                     "hsla(0, 0%, 0%, 0)",
+//                     0.14,
+//                     "hsl(4, 82%, 42%)",
+//                     0.29,
+//                     "hsl(358, 67%, 55%)",
+//                     0.43,
+//                     "hsl(4, 100%, 78%)",
+//                     0.57,
+//                     "hsl(0, 0%, 96%)",
+//                     0.71,
+//                     "hsl(195, 100%, 68%)",
+//                     0.86,
+//                     "hsl(197, 100%, 52%)",
+//                     1,
+//                     "hsl(212, 68%, 46%)"
+//                 ],
+//
+//
+//                 // 'heatmap-color': [
+//                 //     'interpolate',
+//                 //     ['linear'],
+//                 //     ['heatmap-density'],
+//                 //     0,
+//                 //     'rgba(236,222,239,0)',
+//                 //     0.2,
+//                 //     'rgb(208,209,230)',
+//                 //     0.4,
+//                 //     'rgb(166,189,219)',
+//                 //     0.6,
+//                 //     'rgb(103,169,207)',
+//                 //     0.8,
+//                 //     'rgb(28,144,153)'
+//                 // ],
+// // increase radius as zoom increases
+//                 'heatmap-radius': {
+//                     'stops': [
+//                         [11, 10],
+//                         [15, 30]
+//                     ]
+//                 },
+// // decrease opacity to transition into the circle layer
+//                 'heatmap-opacity': {
+//                     'default': 1,
+//                     'stops': [
+//                         [14, .7],
+//                         [17, 0]
+//                     ]
+//                 }
+//             }
+//         },
+//     );
 
 
 
@@ -473,6 +497,7 @@ map.on('load', () => {
 });
 
 
+
 switchlayer = function (lname) {
     if (document.getElementById(lname + "CB").checked) {
         map.setLayoutProperty(lname, 'visibility', 'visible');
@@ -480,6 +505,8 @@ switchlayer = function (lname) {
         map.setLayoutProperty(lname, 'visibility', 'none');
     }
 }
+
+
 
 
 map.on('click', function(e) {
@@ -544,6 +571,9 @@ map.on('click', function(e) {
 //         .addTo(map);
 // });
 
+var checkboxLayerShowList = ['LSOA boundaries',
+    'lsoaChoropleth'
+]
 
 
 var tenureShowList = ['owner-occupied',
@@ -577,7 +607,7 @@ var lsoaShowList = ['Birmingham 029A',
 
 document.getElementById('lsoaListCB').addEventListener('change', function() {
     if (this.checked) {
-                map.setFilter('lsoaChoropleth', ['in', 'LSOA11NM', ...lsoaShowList]);
+        map.setFilter('lsoaChoropleth', ['in', 'LSOA11NM', ...lsoaShowList]);
     } else { map.setFilter('lsoaChoropleth', null)
     }})
 
@@ -594,12 +624,20 @@ document.getElementById('lsoaListCB').addEventListener('change', function() {
 
 
 // let tenureShowList;
-document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bromfordCB"]').forEach(function (chk) {
+document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [name="tenureCBs"], [name="bromfordCB"]').forEach(function (chk) {
     chk.addEventListener('change', function () {
+        checkboxLayerShowList = Array.from(document.querySelectorAll("input[name='checkboxLayerList']:checked")).map((elem) => elem.value)
         tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
 
         // console.log(tenureShowList, epcShowList, bromfordShowList)
+        console.log(checkboxLayerShowList)
+        //
+        // for(count = 0; count < checkboxLayerList.length; count++) {
+        //
+        // }
+        //
+        // (var i = 0; i < props.length; i++)
 
         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
         var tenureFilter = ['in', 'tenure', ...tenureShowList];
