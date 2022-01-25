@@ -5,7 +5,7 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/light-v10',
     // style: 'mapbox://styles/mapbox/streets-v11',
     center: [-1.8040, 52.4766],
-    zoom: 11,
+    zoom: 12,
 });
 
 const draw = new MapboxDraw({
