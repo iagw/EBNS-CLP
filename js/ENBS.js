@@ -61,6 +61,12 @@ map.on('load', () => {
         // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
     });
 
+    map.addSource('chargepoints', {
+        type: 'geojson',
+        // data: './data/EBNS_epcs_compact_4326_part.geojson'
+        'data': 'data/NCR-Bham-Cov.geojson'
+    });
+
     // map.addSource('currentEnergyRating', {
     //     'type': 'csv',
     //     'data': 'data/lsoa_epc_current_energy_rating.csv'
@@ -271,6 +277,45 @@ map.on('load', () => {
                     "hsl(357,82%,53%)",
                     // "hsl(346,100%,32%)", // previous
                     "hsla(0, 0%, 0%, 0)",
+                ],
+
+
+                'circle-stroke-color': '#7d807d', //'white'
+                // 'circle-stroke-width': 1,
+                'circle-stroke-width': {
+                    'type': 'exponential',
+                    'stops': [
+                        [11, 0],
+                        [18, 2],
+                    ]
+                },
+                'circle-opacity': 0.8,
+            }
+        },
+    );
+
+    map.addLayer(
+        {
+            'id': 'chPoints',
+            'type': 'circle',
+            'source': 'chargepoints',
+            'minzoom': 12,
+            'paint': {
+                // 'circle-radius': 8,
+                'circle-radius': {
+                    'type': 'exponential',
+                    'stops': [
+                        [11, 3],
+                        [16, 8],
+                        [22, 15],
+                    ]
+                },
+                'circle-color': [
+
+                    "hsl(262,82%,53%)",
+                    // "hsl(346,100%,32%)", // previous
+                    "hsla(0, 0%, 0%, 0)",
+
                 ],
 
 
