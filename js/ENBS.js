@@ -609,7 +609,8 @@ document.querySelectorAll('[name="epcRatingCBs"], [name="tenureCBs"], [name="bro
         var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
-        map.setFilter('heatMap', heatMapFilter);
+        var combinedHeatmapFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter, heatMapFilter];
+        map.setFilter('heatMap', combinedHeatmapFilter);
 
     });
 });
