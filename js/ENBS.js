@@ -112,7 +112,7 @@ map.on('load', () => {
                 100,'#e31d3e'
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
-            'fill-opacity': 0.7
+            'fill-opacity': 0.5
         }
     });
 
@@ -222,7 +222,7 @@ map.on('load', () => {
             'id': 'id2',
             'type': 'circle',
             'source': 'points',
-            'minzoom': 11,
+            'minzoom': 12,
             'paint': {
                 // 'circle-radius': 8,
                 'circle-radius': {
@@ -461,6 +461,44 @@ map.on('click', function(e) {
         )
         .addTo(map);
 });
+
+// map.on('click', function(e) {
+//     // var feature = map.getSource('id2')._options.data;
+//     //
+//     //     if (!feature.length) {
+//     //     return;
+//     // }
+//
+//
+//     var features = map.queryRenderedFeatures(e.point, {
+//         layers: ['id2'] // replace this with the name of the layer
+//     });
+//
+//     if (!features.length) {
+//         return;
+//     }
+//
+//     var feature = features[0];
+//         // console.log(feature)
+//         // console.log(feature.properties['class_description'])
+//
+//
+//     var popup = new mapboxgl.Popup({ offset: [0, -15] })
+//         .setLngLat(e.lngLat)
+//         .setHTML('' +
+//             '<h3>'+ feature.properties['uprn'] + '</h3>'
+//             // '<p>' + feature.properties['LSOA_uprn_count'] + ' number of dwellings' + '</p>' +
+//             // '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_count'] + ') ' +
+//             // feature.properties['LSOA_epc_g_to_d_percent'] + '% of dwellings with epcs G to D' + '</p>' +
+//             // '<p>' + '(' + feature.properties['LSOA_no epc_count'] + ') ' +
+//             // feature.properties['LSOA_no epc_percent'] + '% of dwellings without epc' + '</p>' +
+//             // '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_and_no_epc_count'] + ') ' +
+//             // feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of dwellings with epc G to D or no epc' + '</p>'
+//         )
+//         .addTo(map);
+// });
+
+
 
 var tenureShowList = ['owner-occupied',
     'rental (social)',
