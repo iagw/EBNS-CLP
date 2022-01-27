@@ -325,6 +325,10 @@ map.on('load', () => {
             'type': 'circle',
             'source': 'chargepoints',
             'minzoom': 10,
+                    'layout': {
+            // Make the layer non-visible by default.
+            'visibility': 'none'
+        },
             'paint': {
                 // 'circle-radius': 8,
                 'circle-radius': {
@@ -336,8 +340,6 @@ map.on('load', () => {
                     ]
                 },
                 "circle-color": "#913bfb",
-
-
                 'circle-stroke-color': '#ffffff', //'white'
                 // 'circle-stroke-width': 1,
                 'circle-stroke-width': {
@@ -456,9 +458,9 @@ map.on('load', () => {
 // })
 
     map.on('idle',function(){
-        // var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
-        var mapLayer = map.getSource('points')
-        // console.log(mapLayer)
+        var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
+        // var mapLayer = map.getSource('points')
+        console.log(mapLayer)
         // console.log(mapLayer['features']['properties']['uprn'][0])
 
 
@@ -622,22 +624,36 @@ document.getElementById('lsoaListCB').addEventListener('change', function() {
 
 // console.log(tenureShowList, epcShowList, bromfordShowList);
 
+map.once('idle',function() {
+    let checkedboxes = document.querySelectorAll('input[name="checkboxLayerList"]');
+    for (count = 0; count < checkedboxes.length; count++) {
+        // console.log(checkedboxes[count])
+        // if (map.isStyleLoaded()) {
+            if (document.getElementById(checkedboxes[count].id).checked) {
+                console.log(`checked ${checkedboxes[count].value}`)
+
+                map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'visible');
+            } else {
+                console.log(`unchecked ${checkedboxes[count].value}`)
+                map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'none');
+            }
+        // } else {
+        //     console.log(`still loading`)
+        // }
+    }
+});
+
+// let uncheckedboxes = document.querySelectorAll('input[name="checkboxLayerList"]:unchecked');
 
 // let tenureShowList;
 document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [name="tenureCBs"], [name="bromfordCB"]').forEach(function (chk) {
     chk.addEventListener('change', function () {
-        checkboxLayerShowList = Array.from(document.querySelectorAll("input[name='checkboxLayerList']:checked")).map((elem) => elem.value)
+        // checkboxLayerShowList = Array.from(document.querySelectorAll("input[name='checkboxLayerList']:checked")).map((elem) => elem.value)
         tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
+    // console.log(checkboxLayerShowList)
 
         // console.log(tenureShowList, epcShowList, bromfordShowList)
-        console.log(checkboxLayerShowList)
-        //
-        // for(count = 0; count < checkboxLayerList.length; count++) {
-        //
-        // }
-        //
-        // (var i = 0; i < props.length; i++)
 
         var epcRatingFilter = ['in', 'current_energy_rating', ...epcShowList];
         var tenureFilter = ['in', 'tenure', ...tenureShowList];
@@ -647,7 +663,7 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
         var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
-        map.setFilter('heatMap', heatMapFilter);
+        // map.setFilter('heatMap', heatMapFilter);
 
     });
 });
