@@ -448,7 +448,7 @@ map.on('load', () => {
     // var feature = turf.points({'source': 'points'});
     // console.log(feature);
 
-
+//
 
 //     var uniqueFeatures = getUniqueFeatures(features, "icon");
 //
