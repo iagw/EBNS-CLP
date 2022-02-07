@@ -17,6 +17,27 @@ const draw = new MapboxDraw({
     }
 });
 
+// var rangeslider = document.getElementById("sliderRange");
+// var output = document.getElementById("demo");
+// output.innerHTML = rangeslider.value;
+//
+// rangeslider.oninput = function() {
+//     output.innerHTML = this.value;
+// }
+
+function pconsle(){
+    console.log(tPrice.innerHTML);
+}
+
+function c(n) {
+    console.log(n-tPrice.innerHTML)
+    return n-tPrice.innerHTML;
+}
+
+// const newSliderSize = '10px'; // this could be a passed in dynamic value, etc.
+// document.getElementById("sliderRange").style.setProperty('--sliderSize', newSliderSize);
+
+
 map.addControl(draw, 'top-left');
 
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
@@ -116,6 +137,14 @@ map.on('load', () => {
                 88,'#f2a867',
                 95,'#f17e23',
                 100,'#e31d3e'
+
+                // 60,'#0e7e58',
+                // 67,'#2aa45b',
+                // 74,'#8cbc42',
+                // 81,'#f6cc15',
+                // 88,'#f2a867',
+                // 95,'#f17e23',
+                // 100,'#e31d3e'
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
             'fill-opacity': 0.5
@@ -271,32 +300,25 @@ map.on('load', () => {
                         "get",
                         "current_energy_rating"
                     ],
-
                     "A",
                     "hsl(214,45%,49%)",
                     // "hsl(214,45%,49%)", // previous
-
                     "B",
                     "hsl(150,86%,28%)",
                     // "hsl(195,59%,79%)", // previous
-
                     "C",
                     "hsl(87,53%,56%)",
                     // "hsl(30,98%,69%)", // previous
-
                     "D",
                     "hsl(58,87%,58%)",
                     // "hsl(14,89%,61%)", // previous
-
                     "E",
                     "hsl(38,91%,59%)",
                     // "hsl(3,69%,50%)", // previous
                     // "hsl(14,89%,61%)",
-
                     "F",
                     "hsl(20,87%,56%)",
                     // "hsl(3,69%,50%)", // previous
-
                     "G",
                     "hsl(357,82%,53%)",
                     // "hsl(346,100%,32%)", // previous
@@ -457,27 +479,27 @@ map.on('load', () => {
 //         console.log(prop.icon);
 // })
 
-    map.on('idle',function(){
-        var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
-        // var mapLayer = map.getSource('points')
-        console.log(mapLayer)
-        // console.log(mapLayer['features']['properties']['uprn'][0])
-
-
-        map.on('draw.create', function(e) {
-            // const userPolygon = draw.getAll();
-            var userPolygon = e.features[0];
-            var pointtocheck = turf.points([
-                [-1.9097609006719085, 52.462021380049995],
-            ]);
-            var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
-            // var ptsWithin = turf.inside(mapLayer, userPolygon);
-            // console.log(ptsWithin);
-        });
-        // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
-        // const oocc = mapLayer.map((feature) => feature.properties.uprn);
-        // map.setFilter('id2', ['in', 'uprn', ...uprn]);
-    });
+    // map.on('idle',function(){
+    //     var mapLayer = map.queryRenderedFeatures({ layers: ['id2'] });
+    //     // var mapLayer = map.getSource('points')
+    //     console.log(mapLayer)
+    //     // console.log(mapLayer['features']['properties']['uprn'][0])
+    //
+    //
+    //     map.on('draw.create', function(e) {
+    //         // const userPolygon = draw.getAll();
+    //         var userPolygon = e.features[0];
+    //         var pointtocheck = turf.points([
+    //             [-1.9097609006719085, 52.462021380049995],
+    //         ]);
+    //         var ptsWithin = turf.pointsWithinPolygon(pointtocheck, userPolygon);
+    //         // var ptsWithin = turf.inside(mapLayer, userPolygon);
+    //         // console.log(ptsWithin);
+    //     });
+    //     // https://docs.mapbox.com/mapbox-gl-js/example/using-box-queryrenderedfeatures/
+    //     // const oocc = mapLayer.map((feature) => feature.properties.uprn);
+    //     // map.setFilter('id2', ['in', 'uprn', ...uprn]);
+    // });
 
 
 
@@ -607,11 +629,31 @@ var lsoaShowList = ['Birmingham 029A',
     'Birmingham 029D',
     'Birmingham 029E']
 
-document.getElementById('lsoaListCB').addEventListener('change', function() {
-    if (this.checked) {
-        map.setFilter('lsoaChoropleth', ['in', 'LSOA11NM', ...lsoaShowList]);
-    } else { map.setFilter('lsoaChoropleth', null)
-    }})
+// document.getElementById('lsoaListCB').addEventListener('change', function() {
+//     if (this.checked) {
+//         map.setFilter('lsoaChoropleth', ['in', 'LSOA11NM', ...lsoaShowList]);
+//     } else { map.setFilter('lsoaChoropleth', null)
+//     }});
+
+document.getElementById('sliderRange').addEventListener('change', function() {
+    const slvalue = sliderRange.value
+    console.log(slvalue)
+    map.setPaintProperty("lsoaChoropleth", "fill-color", [
+        'step',
+        ['get', 'LSOA_epc_g_to_d_and_no_epc_percent'],
+        // '#afc5ff', // any item where `someCountableProperty` is <= 19 will be displayed with this color
+        // 19,
+        // '#376eff', // any item where `someCountableProperty` is <= 22 && > 19 will be displayed with this color
+        // 22,
+        // '#1c3780' // any item where `someCountableProperty` is > 22 will be displayed with this color                60,'#0e7e58',
+        '#2aa45b', 67-slvalue,
+        '#8cbc42', 74-slvalue,
+        '#f6cc15', 81-slvalue,
+        '#f2a867', 88-slvalue,
+        '#f17e23', 95-slvalue,
+        '#e31d3e'
+    ]);
+    });
 
 
 

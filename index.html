@@ -189,6 +189,31 @@
             margin: 0 0 5px;
         }
 
+        .slider {
+            --sliderSize: 25px; /* <---- Add this */
+            -webkit-appearance: none;
+            width: 80%;
+            height: 15px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+
+        .slider::-moz-range-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: var(--sliderSize); /* <---- Set the variable here */
+            height: var(--sliderSize); /* ...and here */
+            border-radius: 50%;
+            background: #4c89af;
+            cursor: pointer;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -247,6 +272,14 @@
             <!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
             <!--            <label for="no epcTenure">no epc</label>-->
             <!--        </div>-->
+            <div class="rangeslider">
+                <p>
+                <input type="range" min="0" max="100" value="50" class="slider" id="sliderRange"
+                step="10" oninput="document.getElementById('tPrice').innerHTML = this.value" />
+                <label id="tPrice"></label>
+                </p>
+<!--                <p>Value: <span id="demo"></span></p>-->
+            </div>
 
             <fieldset>
                 <legend class="categoryLabelOthers">Show tenure from EPC data</legend>
