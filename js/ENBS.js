@@ -347,10 +347,10 @@ map.on('load', () => {
             'type': 'circle',
             'source': 'chargepoints',
             'minzoom': 10,
-                    'layout': {
-            // Make the layer non-visible by default.
-            'visibility': 'none'
-        },
+            'layout': {
+                // Make the layer non-visible by default.
+                'visibility': 'none'
+            },
             'paint': {
                 // 'circle-radius': 8,
                 'circle-radius': {
@@ -441,18 +441,28 @@ map.on('load', () => {
 // });
 
 
-// map.on('draw.create', featuresInArea);
-// map.on('draw.delete', featuresInArea);
-// map.on('draw.update', featuresInArea);
-//
-// function featuresInArea(e) {
-// const userPolygon = draw.getAll();
-// if (userPolygon.features.length > 0) {
-// const area = turf.area(userPolygon);
-// const tpoints = turf.points(['id2'])
-// // ptsWithin = map.queryRenderedFeatures(userPolygon, { layers: ['id2'] });
-// // var ptsWithin = turf.pointsWithinPolygon({ layers: ['id2'] }.toGeoJSON, userPolygon);
-// // console.log(turf.points('id2'), turf.polygon(userPolygon))
+    // map.on('draw.create', featuresInArea);
+    // map.on('draw.delete', featuresInArea);
+    map.on('draw.update', featuresInArea);
+
+    function featuresInArea(e) {
+        const userPolygon = draw.getAll();
+        var userPolygonArray = userPolygon.features[0].geometry.coordinates[0];
+        console.log(userPolygonArray)
+          // var features = map.queryRenderedFeatures(e.point, { layers: ['id2'] });
+            var feature = turf.booleanWithin({'layers': ['id2']}, userPolygon.features[0]);
+
+          // var clusterId = features[0].properties.cluster_id
+          // var pointOnLayerArray = pointOnLayer.features[0]
+        console.log(feature)
+
+        if (userPolygonArray.length > 0) {
+            const area = turf.area(userPolygon.features[0]);
+            // const tpoints = turf.points(layers: ['id2'])
+// ptsWithin = map.queryRenderedFeatures(userPolygon, { layers: ['id2'] });
+//             var ptsWithin = turf.pointsWithinPolygon(tpoints, userPolygonArray);
+        }}
+// console.log(turf.points('id2'), turf.polygon(userPolygon))
 //
 // // Restrict the area to 2 decimal points.
 // const rounded_area = Math.round(area * 100) / 100;
@@ -653,7 +663,7 @@ document.getElementById('sliderRange').addEventListener('change', function() {
         '#f17e23', 95-slvalue,
         '#e31d3e'
     ]);
-    });
+});
 
 
 
@@ -671,14 +681,14 @@ map.once('idle',function() {
     for (count = 0; count < checkedboxes.length; count++) {
         // console.log(checkedboxes[count])
         // if (map.isStyleLoaded()) {
-            if (document.getElementById(checkedboxes[count].id).checked) {
-                console.log(`checked ${checkedboxes[count].value}`)
+        if (document.getElementById(checkedboxes[count].id).checked) {
+            console.log(`checked ${checkedboxes[count].value}`)
 
-                map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'visible');
-            } else {
-                console.log(`unchecked ${checkedboxes[count].value}`)
-                map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'none');
-            }
+            map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'visible');
+        } else {
+            console.log(`unchecked ${checkedboxes[count].value}`)
+            map.setLayoutProperty(checkedboxes[count].value, 'visibility', 'none');
+        }
         // } else {
         //     console.log(`still loading`)
         // }
@@ -693,7 +703,7 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
         // checkboxLayerShowList = Array.from(document.querySelectorAll("input[name='checkboxLayerList']:checked")).map((elem) => elem.value)
         tenureShowList = Array.from(document.querySelectorAll("input[name='tenureCBs']:checked")).map((elem) => elem.value)
         epcShowList = Array.from(document.querySelectorAll("input[name='epcRatingCBs']:checked")).map((elem) => elem.value)
-    // console.log(checkboxLayerShowList)
+        // console.log(checkboxLayerShowList)
 
         // console.log(tenureShowList, epcShowList, bromfordShowList)
 
@@ -709,3 +719,21 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
 
     });
 });
+
+// section below from https://gis.stackexchange.com/questions/344406/dynamical-refresh-of-mapbox-layers-after-drawing-edits
+// map.on('draw.update', sourceRefresh);
+//
+// function sourceRefresh(e) {
+//     var data = draw.getAll();
+//     map.getSource('points').setData(data);
+//     console.log(data)
+// };
+
+// // section below from https://gis.stackexchange.com/questions/344406/dynamical-refresh-of-mapbox-layers-after-drawing-edits
+// map.on('draw.update', sourceRefresh);
+//
+// function sourceRefresh(e) {
+//     var data = draw.getAll();
+//     map.getSource('points').setData(data);
+//     console.log(data)
+// };
