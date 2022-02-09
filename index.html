@@ -238,11 +238,11 @@
                        onchange="switchlayer('lsoaChoropleth')" checked/>
                 <label for="lsoaChoroplethCB">Fill layer</label>
             </div>
-<!--            <div>-->
-<!--                <input type="checkbox" id="heatMapCB" name="checkboxLayerList" value="heatMap"-->
-<!--                       onchange="switchlayer('heatMap')" />-->
-<!--                <label for="heatMapCB">Heat Map layer</label>-->
-<!--            </div>-->
+            <!--            <div>-->
+            <!--                <input type="checkbox" id="heatMapCB" name="checkboxLayerList" value="heatMap"-->
+            <!--                       onchange="switchlayer('heatMap')" />-->
+            <!--                <label for="heatMapCB">Heat Map layer</label>-->
+            <!--            </div>-->
             <div>
                 <input type="checkbox" id="id2CB" name="checkboxLayerList" value="id2"
                        onchange="switchlayer('id2')" checked/>
@@ -256,11 +256,11 @@
 
 
             <!--            <div>-->
-<!--                <input type="checkbox" id="bromfordCB" name="bromfordCB" value="bromford"/>-->
-<!--                <label for="bromfordCB">Bromford</label><br>-->
-<!--                &lt;!&ndash;                <input hidden type="checkbox" id="notbromfordCB" name="bromfordCB" value="0" checked/>&ndash;&gt;-->
-<!--                &lt;!&ndash;                <label hidden for="notbromfordCB">Bromford</label>&ndash;&gt;-->
-<!--            </div>-->
+            <!--                <input type="checkbox" id="bromfordCB" name="bromfordCB" value="bromford"/>-->
+            <!--                <label for="bromfordCB">Bromford</label><br>-->
+            <!--                &lt;!&ndash;                <input hidden type="checkbox" id="notbromfordCB" name="bromfordCB" value="0" checked/>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                <label hidden for="notbromfordCB">Bromford</label>&ndash;&gt;-->
+            <!--            </div>-->
 
             <div>
                 <input type="checkbox" id="lsoaListCB" name="lsoaListCB" value="lsoalist"/>
@@ -274,12 +274,21 @@
             <!--        </div>-->
             <div class="rangeslider">
                 <p>
-                <input type="range" min="0" max="100" value="50" class="slider" id="sliderRange"
-                step="10" oninput="document.getElementById('tPrice').innerHTML = this.value" />
-                <label id="tPrice"></label>
+                    <input type="range" min="0" max="100" value="50" class="slider" id="sliderRange"
+                           step="20" oninput="document.getElementById('tPrice').innerHTML = this.value" />
+                    <label id="tPrice"></label>
                 </p>
-<!--                <p>Value: <span id="demo"></span></p>-->
+                <!--                <p>Value: <span id="demo"></span></p>-->
             </div>
+            <fieldset>
+                <label>Select fill layer</label>
+                <select id='dropdownLayer' name='dropdownLayer'>
+                    <option value='(none)'>Select</option>
+                    <option value='AHAH_OVERALL_DECILE'>AHAH decile</option>
+                    <option value='IMD_OVERALL_DECILE'>IMD overall decile</option>
+<!--                    <option value='IMD_OVERALL_DECILE'>Panaji</option>-->
+                </select>
+            </fieldset>
 
             <fieldset>
                 <legend class="categoryLabelOthers">Show tenure from EPC data</legend>
@@ -299,25 +308,25 @@
                     <input hidden type="checkbox" id="no epcCB" name="tenureCBs" value="no epc" checked/>
                     <label hidden for="no epcCB">no epc</label>
                 </div>
-            <legend class="categoryLabelOthers">Current EPC Rating</legend>
-            <div>
-                <input type="checkbox" id="no epcCB" name="epcRatingCBs" value="no epc" checked/>
-                <label for="no epcCB">no epc</label><br>
-                <input type="checkbox" id="ACB" name="epcRatingCBs" value="A" checked/>
-                <label for="ACB">A</label><br>
-                <input type="checkbox" id="BCB" name="epcRatingCBs" value="B" checked/>
-                <label for="BCB">B</label><br>
-                <input type="checkbox" id="CCB" name="epcRatingCBs" value="C" checked/>
-                <label for="CCB">C</label><br>
-                <input type="checkbox" id="DCB" name="epcRatingCBs" value="D" checked/>
-                <label for="DCB">D</label><br>
-                <input type="checkbox" id="ECB" name="epcRatingCBs" value="E" checked/>
-                <label for="ECB">E</label><br>
-                <input type="checkbox" id="FCB" name="epcRatingCBs" value="F" checked/>
-                <label for="FCB">F</label><br>
-                <input type="checkbox" id="GCB" name="epcRatingCBs" value="G" checked/>
-                <label for="GCB">G</label><br>
-            </div>
+                <legend class="categoryLabelOthers">Current EPC Rating</legend>
+                <div>
+                    <input type="checkbox" id="no epcCB" name="epcRatingCBs" value="no epc" checked/>
+                    <label for="no epcCB">no epc</label><br>
+                    <input type="checkbox" id="ACB" name="epcRatingCBs" value="A" checked/>
+                    <label for="ACB">A</label><br>
+                    <input type="checkbox" id="BCB" name="epcRatingCBs" value="B" checked/>
+                    <label for="BCB">B</label><br>
+                    <input type="checkbox" id="CCB" name="epcRatingCBs" value="C" checked/>
+                    <label for="CCB">C</label><br>
+                    <input type="checkbox" id="DCB" name="epcRatingCBs" value="D" checked/>
+                    <label for="DCB">D</label><br>
+                    <input type="checkbox" id="ECB" name="epcRatingCBs" value="E" checked/>
+                    <label for="ECB">E</label><br>
+                    <input type="checkbox" id="FCB" name="epcRatingCBs" value="F" checked/>
+                    <label for="FCB">F</label><br>
+                    <input type="checkbox" id="GCB" name="epcRatingCBs" value="G" checked/>
+                    <label for="GCB">G</label><br>
+                </div>
             </fieldset>
 
             <!--            <div><select id="layerinput" name="layerinput" onchange="switchLayer()" aria-label="LSOA Layer">-->
