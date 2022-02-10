@@ -699,15 +699,10 @@ var lsoaShowList = ['Birmingham 029A',
 //     } else { map.setFilter('lsoaChoropleth', null)
 //     }});
 
-
-//gets input from dropdown menu - the 'name' of the data to display is set in the html page
-document.getElementById('dropdownLayer').addEventListener('change', function() {
-    const dropdownLayerValue = dropdownLayer.value
+// Setup our function to run on various events
+var chooseChoroLayerFunction = function (event) {
+        const dropdownLayerValue = dropdownLayer.value
     console.log(dropdownLayerValue)
-    // console.log(chorolist[slvalue])
-    // phvals = lsoaChoropleth.features.map(f => f.properties.chorolist[slvalue]);
-    // console.log(map.style.sourceCaches);
-
     map.setPaintProperty("lsoaChoropleth", "fill-color", [
         'step',
         ['get', dropdownLayerValue],
@@ -722,7 +717,37 @@ document.getElementById('dropdownLayer').addEventListener('change', function() {
         '#0868ac', 9,
         '#084081'
     ]);
-});
+};
+
+// Add our event listeners
+document.getElementById('dropdownLayer').addEventListener('load', chooseChoroLayerFunction, false);
+document.getElementById('dropdownLayer').addEventListener('change', chooseChoroLayerFunction, false);
+
+
+
+// //gets input from dropdown menu - the 'name' of the data to display is set in the html page
+// document.getElementById('dropdownLayer').addEventListener('change', function() {
+//     const dropdownLayerValue = dropdownLayer.value
+//     console.log(dropdownLayerValue)
+//     // console.log(chorolist[slvalue])
+//     // phvals = lsoaChoropleth.features.map(f => f.properties.chorolist[slvalue]);
+//     // console.log(map.style.sourceCaches);
+//
+//     map.setPaintProperty("lsoaChoropleth", "fill-color", [
+//         'step',
+//         ['get', dropdownLayerValue],
+//         '#ffffff', 1,
+//         '#f7fcf0', 2,
+//         '#e0f3db', 3,
+//         '#ccebc5', 4,
+//         '#a8ddb5', 5,
+//         '#7bccc4', 6,
+//         '#4eb3d3', 7,
+//         '#2b8cbe', 8,
+//         '#0868ac', 9,
+//         '#084081'
+//     ]);
+// });
 
 
 //left in for code for slider
@@ -733,28 +758,48 @@ document.getElementById('dropdownLayer').addEventListener('change', function() {
 // chorolist[60] = 'ELECTRIC_CENTRAL_HEATING_INCLUDING_STORAGE_HEATERS'
 // chorolist[80] = 'TOTAL_NUMBER_OF_CARS_AND_VANS'
 // chorolist[100] = 'RESIDENT_POPULATION'
+
+var chorolist = {};
+chorolist[0] = '00A'
+chorolist[20] = '20A'
+chorolist[40] = '40A'
+chorolist[60] = '60A'
+chorolist[80] = '80A'
+chorolist[100] = '100A'
+
+document.querySelectorAll('[name="weightingSl"]').forEach(function (chk) {
+    chk.addEventListener('change', function () {
+        var sl1value = slider1Range.value;
+        var sl2value = slider2Range.value;
+        var sl3value = slider3Range.value;
+        console.log(`${sl1value}A_${sl2value}B_${sl3value}C`);
+    });
+});
+
+
 // document.getElementById('sliderRange').addEventListener('change', function() {
 //     const slvalue = sliderRange.value
-//     console.log(slvalue)
-//     console.log(chorolist[slvalue])
-//     // phvals = lsoaChoropleth.features.map(f => f.properties.chorolist[slvalue]);
-//     console.log(map.style.sourceCaches);
+//     // console.log(slvalue)
+//     console.log(`${chorolist[slvalue]} name: ${slvalue}A`);
 //
-//     map.setPaintProperty("lsoaChoropleth", "fill-color", [
-//         'step',
-//         ['get', chorolist[slvalue]],
-//         // '#afc5ff', // any item where `someCountableProperty` is <= 19 will be displayed with this color
-//         // 19,
-//         // '#376eff', // any item where `someCountableProperty` is <= 22 && > 19 will be displayed with this color
-//         // 22,
-//         // '#1c3780' // any item where `someCountableProperty` is > 22 will be displayed with this color                60,'#0e7e58',
-//         '#2aa45b', 67-slvalue,
-//         '#8cbc42', 74-slvalue,
-//         '#f6cc15', 81-slvalue,
-//         '#f2a867', 88-slvalue,
-//         '#f17e23', 95-slvalue,
-//         '#e31d3e'
-//     ]);
+//     // phvals = lsoaChoropleth.features.map(f => f.properties.chorolist[slvalue]);
+//     // console.log(map.style.sourceCaches);
+//
+//     // map.setPaintProperty("lsoaChoropleth", "fill-color", [
+//     //     'step',
+//     //     ['get', chorolist[slvalue]],
+//     //     // '#afc5ff', // any item where `someCountableProperty` is <= 19 will be displayed with this color
+//     //     // 19,
+//     //     // '#376eff', // any item where `someCountableProperty` is <= 22 && > 19 will be displayed with this color
+//     //     // 22,
+//     //     // '#1c3780' // any item where `someCountableProperty` is > 22 will be displayed with this color                60,'#0e7e58',
+//     //     '#2aa45b', 67-slvalue,
+//     //     '#8cbc42', 74-slvalue,
+//     //     '#f6cc15', 81-slvalue,
+//     //     '#f2a867', 88-slvalue,
+//     //     '#f17e23', 95-slvalue,
+//     //     '#e31d3e'
+//     // ]);
 // });
 
 

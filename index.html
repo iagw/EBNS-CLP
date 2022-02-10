@@ -190,7 +190,7 @@
         }
 
         .slider {
-            --sliderSize: 25px; /* <---- Add this */
+            --sliderSize: 15px; /* <---- Add this */
             -webkit-appearance: none;
             width: 80%;
             height: 15px;
@@ -279,19 +279,26 @@
             <!--        </div>-->
             <div class="rangeslider">
                 <p>
-                    <input type="range" min="0" max="100" value="50" class="slider" id="sliderRange"
-                           step="20" oninput="document.getElementById('tPrice').innerHTML = this.value" />
-                    <label id="tPrice"></label>
+                    <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider1Range"
+                           step="1" oninput="document.getElementById('slider1Value').innerHTML = this.value" />
+                    <label id="slider1Value"></label>
+                    <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider2Range"
+                           step="1" oninput="document.getElementById('slider2Value').innerHTML = this.value" />
+                    <label id="slider2Value"></label>
+                    <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider3Range"
+                           step="1" oninput="document.getElementById('slider3Value').innerHTML = this.value" />
+                    <label id="slider3Value"></label>
                 </p>
                 <!--                <p>Value: <span id="demo"></span></p>-->
             </div>
             <fieldset>
                 <label>Select fill layer</label>
                 <select id='dropdownLayer' name='dropdownLayer'>
-                    <option value='(none)'>Select</option>
-                    <option value='AHAH_OVERALL_DECILE'>AHAH decile</option>
-                    <option value='IMD_OVERALL_DECILE'>IMD overall decile</option>
-<!--                    <option value='IMD_OVERALL_DECILE'>Panaji</option>-->
+<!--                    <option value='(none)'>Select</option>-->
+                    <option value='IMD_FUEL_POVERTY_LSOA_LOCAL_DECILE'>Fuel poverty decile</option>
+                    <option value='LEEIDI_LSOA_LOCAL_DECILE'>LEEIDI overall decile</option>
+                    <option value='IMD_HEALTH_LSOA_LOCAL_DECILE'>IMD Health decile</option>
+                    <option value='AHAH_LSOA_LOCAL_DECILE'>AHAH decile</option>
                 </select>
             </fieldset>
 
