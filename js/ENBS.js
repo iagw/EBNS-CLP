@@ -82,6 +82,12 @@ map.on('load', () => {
         // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
     });
 
+    map.addSource('lsoarankings', {
+        type: 'geojson',
+        data: './data/EBNS_LSOA_rankings_4326.geojson',
+        // promoteId: 'LSOA11CD' // promote field to be used as a foreign key
+    });
+
     map.addSource('chargepoints', {
         type: 'geojson',
         // data: './data/EBNS_epcs_compact_4326_part.geojson'
@@ -151,6 +157,30 @@ map.on('load', () => {
         }
     });
 
+    map.addLayer({
+        "id": "lsoaChoropleth2",
+        "type": "fill",
+        "source": "lsoarankings",
+        "paint": {
+            'fill-color': [
+                'interpolate',
+                ['linear'],
+                ['get', 'Indicative weightings for 18.11.2021_EQUAL WEIGHTING'],
+                1,'#660000',
+                2,'#cc0000',
+                3,'#f44336',
+                4,'#e06666',
+                5,'#f4cccc',
+                6,'#d0e0e3',
+                7,'#9fc5e8',
+                8,'#2986cc',
+                9,'#0b5394',
+                10,'#073763'
+            ],
+            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+            'fill-opacity': 0.5
+        }
+    });
 //     map.addLayer(
 //         {
 //             'id': 'heatMap',
@@ -570,6 +600,29 @@ map.on('click', function(e) {
         .addTo(map);
 });
 
+map.on('click', function(e) {
+    var features = map.queryRenderedFeatures(e.point, {
+        layers: ['lsoaChoropleth2'] // replace this with the name of the layer
+    });
+
+    if (!features.length) {
+        return;
+    }
+
+    var feature = features[0];
+
+    var popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(e.lngLat)
+        .setHTML('' +
+            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEDI'] + ' for local energy deprivation' + '</p>' +
+            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEEDI'] + ' for local education & employment deprivation' + '</p>' +
+            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LHDI'] + ' for local health deprivation' + '</p>' +
+            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LAHAHI'] + ' for local access deprivation' + '</p>' +
+            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_EQUAL WEIGHTING'] + ' for overall intervention prioritisation' + '</p>'
+        )
+        .addTo(map);
+});
 // map.on('click', function(e) {
 //     // var feature = map.getSource('id2')._options.data;
 //     //
