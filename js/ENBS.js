@@ -134,18 +134,40 @@ map.on('load', () => {
         "paint": {
             'fill-color': [
                 'step',
-                ['get', 'LEEIDI_LSOA_LOCAL_DECILE'],
-                '#ffffff', 1,
-                '#f7fcf0', 2,
-                '#e0f3db', 3,
-                '#ccebc5', 4,
-                '#a8ddb5', 5,
-                '#7bccc4', 6,
-                '#4eb3d3', 7,
-                '#2b8cbe', 8,
-                '#0868ac', 9,
-                '#084081'
+                ['get', '1A_1B_1C_1D'],
+                '#660000', 1,
+                '#cc0000', 2,
+                '#f44336', 3,
+                '#e06666', 4,
+                '#f4cccc', 5,
+                '#d0e0e3', 6,
+                '#9fc5e8', 7,
+                '#2986cc', 8,
+                '#0b5394', 9,
+                '#073763'
 
+                // '#440154', 1,
+                // '#482878', 2,
+                // '#3e4989', 3,
+                // '#31688e', 4,
+                // '#26828e', 5,
+                // '#1f9e89', 6,
+                // '#35b779', 7,
+                // '#6ece58', 8,
+                // '#b5de2b', 9,
+                // '#fde725'
+                //
+                // '#ffffff', 1,
+                // '#f7fcf0', 2,
+                // '#e0f3db', 3,
+                // '#ccebc5', 4,
+                // '#a8ddb5', 5,
+                // '#7bccc4', 6,
+                // '#4eb3d3', 7,
+                // '#2b8cbe', 8,
+                // '#0868ac', 9,
+                // '#084081'
+                //
                 // 60,'#0e7e58',
                 // 67,'#2aa45b',
                 // 74,'#8cbc42',
@@ -159,29 +181,29 @@ map.on('load', () => {
         }
     });
 
-    map.addLayer({
-        "id": "lsoaChoropleth2",
-        "type": "fill",
-        "source": "lsoarankings",
-        "paint": {
-            'fill-color': [
-                'step',
-                ['get', 'Indicative weightings for 18.11.2021_EQUAL WEIGHTING'],
-                '#660000', 1,
-                '#cc0000', 2,
-                '#f44336', 3,
-                '#e06666', 4,
-                '#f4cccc', 5,
-                '#d0e0e3', 6,
-                '#9fc5e8', 7,
-                '#2986cc', 8,
-                '#0b5394', 9,
-                '#073763'
-            ],
-            'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
-            'fill-opacity': 0.5
-        }
-    });
+    // map.addLayer({
+    //     "id": "lsoaChoropleth2",
+    //     "type": "fill",
+    //     "source": "lsoarankings",
+    //     "paint": {
+    //         'fill-color': [
+    //             'step',
+    //             ['get', 'Indicative weightings for 18.11.2021_EQUAL WEIGHTING'],
+    //             '#660000', 1,
+    //             '#cc0000', 2,
+    //             '#f44336', 3,
+    //             '#e06666', 4,
+    //             '#f4cccc', 5,
+    //             '#d0e0e3', 6,
+    //             '#9fc5e8', 7,
+    //             '#2986cc', 8,
+    //             '#0b5394', 9,
+    //             '#073763'
+    //         ],
+    //         'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
+    //         'fill-opacity': 0.5
+    //     }
+    // });
 //     map.addLayer(
 //         {
 //             'id': 'heatMap',
@@ -700,29 +722,29 @@ var lsoaShowList = ['Birmingham 029A',
 //     } else { map.setFilter('lsoaChoropleth', null)
 //     }});
 
-// Setup our function to run on various events
-var chooseChoroLayerFunction = function (event) {
-    const dropdownLayerValue = dropdownLayer.value
-    console.log(dropdownLayerValue)
-    map.setPaintProperty("lsoaChoropleth", "fill-color", [
-        'step',
-        ['get', dropdownLayerValue],
-        '#ffffff', 1,
-        '#f7fcf0', 2,
-        '#e0f3db', 3,
-        '#ccebc5', 4,
-        '#a8ddb5', 5,
-        '#7bccc4', 6,
-        '#4eb3d3', 7,
-        '#2b8cbe', 8,
-        '#0868ac', 9,
-        '#084081'
-    ]);
-};
-
-// Add our event listeners
-document.getElementById('dropdownLayer').addEventListener('load', chooseChoroLayerFunction, false);
-document.getElementById('dropdownLayer').addEventListener('change', chooseChoroLayerFunction, false);
+// // Setup our function to run on various events
+// var chooseChoroLayerFunction = function (event) {
+//     const dropdownLayerValue = dropdownLayer.value
+//     console.log(dropdownLayerValue)
+//     map.setPaintProperty("lsoaChoropleth", "fill-color", [
+//         'step',
+//         ['get', dropdownLayerValue],
+//         '#ffffff', 1,
+//         '#f7fcf0', 2,
+//         '#e0f3db', 3,
+//         '#ccebc5', 4,
+//         '#a8ddb5', 5,
+//         '#7bccc4', 6,
+//         '#4eb3d3', 7,
+//         '#2b8cbe', 8,
+//         '#0868ac', 9,
+//         '#084081'
+//     ]);
+// };
+//
+// // Add our event listeners
+// document.getElementById('dropdownLayer').addEventListener('load', chooseChoroLayerFunction, false);
+// document.getElementById('dropdownLayer').addEventListener('change', chooseChoroLayerFunction, false);
 
 
 
@@ -768,12 +790,31 @@ chorolist[60] = '60A'
 chorolist[80] = '80A'
 chorolist[100] = '100A'
 
+
+
 document.querySelectorAll('[name="weightingSl"]').forEach(function (chk) {
     chk.addEventListener('change', function () {
         var sl1value = slider1Range.value;
         var sl2value = slider2Range.value;
         var sl3value = slider3Range.value;
-        console.log(`${sl1value}A_${sl2value}B_${sl3value}C`);
+        var sl4value = slider4Range.value;
+        var colname = `${sl1value}A_${sl2value}B_${sl3value}C_${sl4value}D`
+        console.log(colname);
+        map.setPaintProperty("lsoaChoropleth", "fill-color", [
+        'step',
+        ['get', colname],
+                '#660000', 1,
+                '#cc0000', 2,
+                '#f44336', 3,
+                '#e06666', 4,
+                '#f4cccc', 5,
+                '#d0e0e3', 6,
+                '#9fc5e8', 7,
+                '#2986cc', 8,
+                '#0b5394', 9,
+                '#073763'
+
+    ]);
     });
 });
 

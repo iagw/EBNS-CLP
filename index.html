@@ -238,11 +238,11 @@
                        onchange="switchlayer('lsoaChoropleth')" checked/>
                 <label for="lsoaChoroplethCB">Original Fill layer</label>
             </div>
-            <div>
-                <input type="checkbox" id="lsoaChoropleth2CB" name="checkboxLayerList" value="lsoaChoropleth2"
-                       onchange="switchlayer('lsoaChoropleth2')" checked/>
-                <label for="lsoaChoropleth2CB">Local Prioritisation Decile (equal weighting)</label>
-            </div>
+<!--            <div>-->
+<!--                <input type="checkbox" id="lsoaChoropleth2CB" name="checkboxLayerList" value="lsoaChoropleth2"-->
+<!--                       onchange="switchlayer('lsoaChoropleth2')" />-->
+<!--                <label for="lsoaChoropleth2CB">Local Prioritisation Decile (equal weighting)</label>-->
+<!--            </div>-->
             <!--            <div>-->
             <!--                <input type="checkbox" id="heatMapCB" name="checkboxLayerList" value="heatMap"-->
             <!--                       onchange="switchlayer('heatMap')" />-->
@@ -278,29 +278,36 @@
             <!--            <label for="no epcTenure">no epc</label>-->
             <!--        </div>-->
             <div class="rangeslider">
+                <fieldset>
                 <p>
+                    <p>Energy deprivation slider</p>
                     <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider1Range"
                            step="1" oninput="document.getElementById('slider1Value').innerHTML = this.value" />
                     <label id="slider1Value"></label>
+                    <p>IMD Health slider</p>
                     <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider2Range"
                            step="1" oninput="document.getElementById('slider2Value').innerHTML = this.value" />
                     <label id="slider2Value"></label>
+                    <p>Education/Employment slider</p>
                     <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider3Range"
                            step="1" oninput="document.getElementById('slider3Value').innerHTML = this.value" />
                     <label id="slider3Value"></label>
+                    <p>AHAH slider</p>
+                    <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider4Range"
+                           step="1" oninput="document.getElementById('slider3Value').innerHTML = this.value" />
+                    <label id="slider4Value"></label>
                 </p>
                 <!--                <p>Value: <span id="demo"></span></p>-->
             </div>
-            <fieldset>
-                <label>Select fill layer</label>
-                <select id='dropdownLayer' name='dropdownLayer'>
-<!--                    <option value='(none)'>Select</option>-->
-                    <option value='LEDI_LSOA_LOCAL_DECILE'>Energy Deprivation local decile</option>
-                    <option value='LEEDI_LSOA_LOCAL_DECILE'>Education/Employment local decile</option>
-                    <option value='IMD_HEALTH_LSOA_LOCAL_DECILE'>IMD Health local decile</option>
-                    <option value='AHAH_LSOA_LOCAL_DECILE'>AHAH local decile</option>
-                </select>
-            </fieldset>
+<!--            <fieldset>-->
+<!--                <label>Select fill layer</label>-->
+<!--                <select id='dropdownLayer' name='dropdownLayer'>-->
+<!--                    <option value='LEDI_LSOA_LOCAL_DECILE' >Energy Deprivation local decile</option>-->
+<!--                    <option value='LEEDI_LSOA_LOCAL_DECILE'selected>Education/Employment local decile</option>-->
+<!--                    <option value='IMD_HEALTH_LSOA_LOCAL_DECILE'>IMD Health local decile</option>-->
+<!--                    <option value='AHAH_LSOA_LOCAL_DECILE'>AHAH local decile</option>-->
+<!--                </select>-->
+<!--            </fieldset>-->
 
             <fieldset>
                 <legend class="categoryLabelOthers">Show tenure from EPC data</legend>
