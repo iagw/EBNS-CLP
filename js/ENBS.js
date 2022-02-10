@@ -133,16 +133,18 @@ map.on('load', () => {
         "source": "lsoas",
         "paint": {
             'fill-color': [
-                'interpolate',
-                ['linear'],
-                ['get', 'FUEL_POVERTY_PERCENTAGE'],
-                60,'#0e7e58',
-                67,'#2aa45b',
-                74,'#8cbc42',
-                81,'#f6cc15',
-                88,'#f2a867',
-                95,'#f17e23',
-                100,'#e31d3e'
+                'step',
+                ['get', 'LEEIDI_LSOA_LOCAL_DECILE'],
+                '#ffffff', 1,
+                '#f7fcf0', 2,
+                '#e0f3db', 3,
+                '#ccebc5', 4,
+                '#a8ddb5', 5,
+                '#7bccc4', 6,
+                '#4eb3d3', 7,
+                '#2b8cbe', 8,
+                '#0868ac', 9,
+                '#084081'
 
                 // 60,'#0e7e58',
                 // 67,'#2aa45b',
@@ -163,19 +165,18 @@ map.on('load', () => {
         "source": "lsoarankings",
         "paint": {
             'fill-color': [
-                'interpolate',
-                ['linear'],
+                'step',
                 ['get', 'Indicative weightings for 18.11.2021_EQUAL WEIGHTING'],
-                1,'#660000',
-                2,'#cc0000',
-                3,'#f44336',
-                4,'#e06666',
-                5,'#f4cccc',
-                6,'#d0e0e3',
-                7,'#9fc5e8',
-                8,'#2986cc',
-                9,'#0b5394',
-                10,'#073763'
+                '#660000', 1,
+                '#cc0000', 2,
+                '#f44336', 3,
+                '#e06666', 4,
+                '#f4cccc', 5,
+                '#d0e0e3', 6,
+                '#9fc5e8', 7,
+                '#2986cc', 8,
+                '#0b5394', 9,
+                '#073763'
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
             'fill-opacity': 0.5
@@ -480,11 +481,11 @@ map.on('load', () => {
         var userPolygonArray = userPolygon.features[0].geometry.coordinates[0];
         // console.log(userPolygonArray)
         console.log({ layers: ['lsoaChoropleth']})
-          // var features = map.queryRenderedFeatures(e.point, { layers: ['id2'] });
-          //   var feature = turf.booleanWithin({'layers': ['id2']}, userPolygon.features[0]);
+        // var features = map.queryRenderedFeatures(e.point, { layers: ['id2'] });
+        //   var feature = turf.booleanWithin({'layers': ['id2']}, userPolygon.features[0]);
 
-          // var clusterId = features[0].properties.cluster_id
-          // var pointOnLayerArray = pointOnLayer.features[0]
+        // var clusterId = features[0].properties.cluster_id
+        // var pointOnLayerArray = pointOnLayer.features[0]
         // console.log(feature)
 
         if (userPolygonArray.length > 0) {
@@ -701,7 +702,7 @@ var lsoaShowList = ['Birmingham 029A',
 
 // Setup our function to run on various events
 var chooseChoroLayerFunction = function (event) {
-        const dropdownLayerValue = dropdownLayer.value
+    const dropdownLayerValue = dropdownLayer.value
     console.log(dropdownLayerValue)
     map.setPaintProperty("lsoaChoropleth", "fill-color", [
         'step',
