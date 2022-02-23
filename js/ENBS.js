@@ -47,6 +47,15 @@ map.addControl(new mapboxgl.ScaleControl({
     unit: 'metric'
 }),'bottom-right');
 
+map.addControl(new mapboxgl.AttributionControl({
+        customAttribution: '© Crown copyright and/or database rights 2022 OS (Research Licence).' +
+            ' © Improvement and Development Agency for Local Government copyright and database rights 2022 (Research Licence).'
+    }), 'bottom-left', {attributionControl: false});
+
+// map.addControl(new mapboxgl.AttributionControl());
+
+
+
 map.addControl(
     new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
@@ -801,20 +810,20 @@ document.querySelectorAll('[name="weightingSl"]').forEach(function (chk) {
         var colname = `${sl1value}A_${sl2value}B_${sl3value}C_${sl4value}D`
         console.log(colname);
         map.setPaintProperty("lsoaChoropleth", "fill-color", [
-        'step',
-        ['get', colname],
-                '#660000', 1,
-                '#cc0000', 2,
-                '#f44336', 3,
-                '#e06666', 4,
-                '#f4cccc', 5,
-                '#d0e0e3', 6,
-                '#9fc5e8', 7,
-                '#2986cc', 8,
-                '#0b5394', 9,
-                '#073763'
+            'step',
+            ['get', colname],
+            '#660000', 1,
+            '#cc0000', 2,
+            '#f44336', 3,
+            '#e06666', 4,
+            '#f4cccc', 5,
+            '#d0e0e3', 6,
+            '#9fc5e8', 7,
+            '#2986cc', 8,
+            '#0b5394', 9,
+            '#073763'
 
-    ]);
+        ]);
     });
 });
 
