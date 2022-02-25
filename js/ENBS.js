@@ -187,9 +187,54 @@ map.on('load', () => {
             ],
             'fill-outline-color': 'rgba(0, 0, 0, 0.2)',
             'fill-opacity': 0.5
-        }
-    });
+        },
 
+    })
+
+    // define layer names for legend
+const layers = [
+'1st',
+'2nd',
+'3rd',
+'4th',
+'5th',
+'6th',
+'7th',
+'8th',
+'9th',
+'10th'
+];
+const colors = [
+'#660000',
+    '#cc0000',
+    '#f44336',
+    '#e06666',
+    '#f4cccc',
+    '#d0e0e3',
+    '#9fc5e8',
+    '#2986cc',
+    '#0b5394',
+    '#073763'
+];
+
+// create legend
+const legend = document.getElementById('legend');
+
+layers.forEach((layer, i) => {
+const color = colors[i];
+const item = document.createElement('div');
+const key = document.createElement('span');
+key.className = 'legend-key';
+key.style.backgroundColor = color;
+
+const value = document.createElement('span');
+value.innerHTML = `${layer}`;
+item.appendChild(key);
+item.appendChild(value);
+legend.appendChild(item);
+});
+
+    
     // map.addLayer({
     //     "id": "lsoaChoropleth2",
     //     "type": "fill",
@@ -863,6 +908,27 @@ document.querySelectorAll('[name="weightingSl"]').forEach(function (chk) {
 //     }})
 
 // console.log(tenureShowList, epcShowList, bromfordShowList);
+
+//this section is from accordion.js from Malcolm's repo
+
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        /* Toggle between adding and removing the "active" class,
+        to highlight the button that controls the panel */
+        this.classList.toggle("active");
+
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
 
 map.once('idle',function() {
     let checkedboxes = document.querySelectorAll('input[name="checkboxLayerList"]');

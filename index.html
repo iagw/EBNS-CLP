@@ -94,7 +94,7 @@
             border-radius: 3px;
             width: 240px;
             z-index: 1;
-            /*max-height: calc(100% - 170px);*/
+            max-height: calc(100% - 170px);
             box-shadow: 1px 1px 8px 1px rgba(0, 0, 0, 0.2);
             top: 55px;
             right: 10px;
@@ -278,6 +278,8 @@
             <!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
             <!--            <label for="no epcTenure">no epc</label>-->
             <!--        </div>-->
+            <button class="accordion"><b><i>Collapse menu below here</i></b></button>
+            <div class="panel">
             <div class="rangeslider">
                 <fieldset>
                 <p>
@@ -311,6 +313,8 @@
 <!--            </fieldset>-->
 
             <fieldset>
+                <button class="accordion"><b><i>Collapse menu below here</i></b></button>
+                <div class="panel">
                 <legend class="categoryLabelOthers">Show tenure from EPC data</legend>
                 <div>
                     <input type="checkbox" id="ownerOccupiedCB" name="tenureCBs" value="owner-occupied" checked/>
@@ -361,6 +365,14 @@
 </div>
 <div class='map-overlay'>
     <img src="images/BEI-360x70.png" alt="University of Birmingham Logo">
+</div>
+
+<!-- Set Up Other CSS -->
+<link rel="stylesheet" href="js/map_ledgend.css" async>
+
+<!-- Floating Objects -->
+<div id="legend" class="legend">
+<h4><b>Prioritisation Decile</b></h4>
 </div>
 
 <!--from https://www.ons.gov.uk/peoplepopulationandcommunity/housing/articles/energyefficiencyofhousinginenglandandwales/2021-->
