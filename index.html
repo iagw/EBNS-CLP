@@ -213,7 +213,24 @@
             cursor: pointer;
         }
 
-
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+        /* Style the accordion panel. Note: hidden by default */
+        .panel {
+            padding: 0 18px;
+            background-color: white;
+            display: none;
+            overflow: hidden;
+        }
 
     </style>
 </head>
@@ -222,8 +239,11 @@
 <div class='map-overlay-2'>
     <fieldset>
         <!--        <legend>Contact Details</legend>-->
-        <legend class="categoryLabelFirst">Show Boundaries</legend>
-        <div>
+        <button class="accordion"><b><i>Boundaries and layers</i></b></button>
+        <div class="panel">
+
+
+
             <div>
                 <input type="checkbox" id="Ward boundariesCB" name="checkboxLayerList" value="Ward boundaries"
                        onchange="switchlayer('Ward boundaries')" />
@@ -274,14 +294,17 @@
                 <!--                <input hidden type="checkbox" id="notbromfordCB" name="bromfordCB" value="0" checked/>-->
                 <!--                <label hidden for="notbromfordCB">Bromford</label>-->
             </div>
+
+        </div>
             <!--        <div>-->
             <!--            <input type="checkbox" id="no epcTenure" value="no epc" onchange="switchvisTenure('no epc')" checked/>-->
             <!--            <label for="no epcTenure">no epc</label>-->
             <!--        </div>-->
-            <button class="accordion"><b><i>Collapse menu below here</i></b></button>
+        <fieldset>
+            <button class="accordion"><b><i>Weighting sliders</i></b></button>
             <div class="panel">
             <div class="rangeslider">
-                <fieldset>
+
                 <p>
                     <p>Energy deprivation slider</p>
                     <input type="range" min="0" max="4" value="1" name="weightingSl" class="slider" id="slider1Range"
@@ -302,6 +325,7 @@
                 </p>
                 <!--                <p>Value: <span id="demo"></span></p>-->
             </div>
+            </div>
 <!--            <fieldset>-->
 <!--                <label>Select fill layer</label>-->
 <!--                <select id='dropdownLayer' name='dropdownLayer'>-->
@@ -313,9 +337,9 @@
 <!--            </fieldset>-->
 
             <fieldset>
-                <button class="accordion"><b><i>Collapse menu below here</i></b></button>
+                <button class="accordion"><b><i>Tenure from EPC data</i></b></button>
                 <div class="panel">
-                <legend class="categoryLabelOthers">Show tenure from EPC data</legend>
+                
                 <div>
                     <input type="checkbox" id="ownerOccupiedCB" name="tenureCBs" value="owner-occupied" checked/>
                     <label for="ownerOccupiedCB">owner-occupied</label><br>
@@ -332,7 +356,11 @@
                     <input hidden type="checkbox" id="no epcCB" name="tenureCBs" value="no epc" checked/>
                     <label hidden for="no epcCB">no epc</label>
                 </div>
-                <legend class="categoryLabelOthers">Current EPC Rating</legend>
+                </div>
+                <fieldset>
+                    <button class="accordion"><b><i>Current EPC rating</i></b></button>
+                <div class="panel">
+
                 <div>
                     <input type="checkbox" id="no epcCB" name="epcRatingCBs" value="no epc" checked/>
                     <label for="no epcCB">no epc</label><br>
