@@ -649,6 +649,41 @@ switchlayer = function (lname) {
 }
 
 
+// // Get the modal
+// var modal = document.getElementById("myModal");
+//
+// // Get the <span> element that closes the modal
+// var span = document.getElementsByClassName("close")[0];
+//
+// // When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//   modal.style.display = "none";
+// };
+//
+// // When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+// 	modal.style.display = "none";
+//   }
+// };
+//
+// // How map triggers the modal
+// // On click open modal
+// map.on('click', 'lsoaChoropleth', function(e) {
+//
+//     // // Block Modal when clicking on other layers
+//     // let f = map.queryRenderedFeatures(e.point);
+//     // f = f.filter(function (el) {
+//     //   return el.source !== 'composite';
+//     // });
+//
+//     if (f.length == 1) {
+//
+//         modal.style.display = "block";
+//     }
+//     ;
+// });
+
 
 
 map.on('click', function(e) {
@@ -659,23 +694,107 @@ map.on('click', function(e) {
     if (!features.length) {
         return;
     }
+    // const data = [0, 10, 35, 45, 60, 30, 5];
+    const data = [
+        {x: 30, y: 10},
+        {x: 50, y: 20},
+        {x: 70, y: 70},
+        {x: 80, y: 80},
+        {x: 90, y: 10}
+    ];
 
-    var feature = features[0];
+    const bgroundColour = [];
+    const labelValues = [];
+    for(i=0; i < data.length; i++) {
+        if(data[i].x >=0 && data[i].x <= 20) { bgroundColour.push('hsl(357,82%,53%)') }
+        if(data[i].x >=21 && data[i].x <= 38) { bgroundColour.push('hsl(20,87%,56%)') }
+        if(data[i].x >=39 && data[i].x <= 54) { bgroundColour.push('hsl(38,91%,59%)') }
+        if(data[i].x >=55 && data[i].x <= 68) { bgroundColour.push('hsl(58,87%,58%)') }
+        if(data[i].x >=69 && data[i].x <= 80) { bgroundColour.push('hsl(87,53%,56%)') }
+        if(data[i].x >=81 && data[i].x <= 91) { bgroundColour.push('hsl(150,86%,28%)') }
+        if(data[i].x >=92 && data[i].x <= 100) { bgroundColour.push('hsl(214,45%,49%)') }
+        labelValues.push(data[i].x)
+    }
+        console.log(labelValues)
 
-    var popup = new mapboxgl.Popup({ offset: [0, -15] })
-        .setLngLat(e.lngLat)
-        .setHTML('' +
-            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
-            '<p>' + feature.properties['LSOA_uprn_count'] + ' number of dwellings' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_count'] + ') ' +
-            feature.properties['LSOA_epc_g_to_d_percent'] + '% of dwellings with epcs G to D' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_no epc_count'] + ') ' +
-            feature.properties['LSOA_no epc_percent'] + '% of dwellings without epc' + '</p>' +
-            '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_and_no_epc_count'] + ') ' +
-            feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of dwellings with epc G to D or no epc' + '</p>'
-        )
-        .addTo(map);
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: ['0', '20', '40', '60', '80', '100' ],
+            datasets: [{
+                label: 'RdSAP Histogram',
+                barPercentage: 1,
+                categoryPercentage: 1,
+                data: data,
+                backgroundColor: bgroundColour,
+                borderColor: bgroundColour,
+
+            }]
+        },
+
+        // Configuration options go here
+        options: {
+            scales: {
+                x: {
+                    type: 'linear',
+                    offset: false,
+                    grid: {
+                        offset: false
+                    },
+                    ticks: {
+                        stepSize: 1
+                    },
+                    title: {
+                        display: true,
+                        text: 'RdSAP value'
+                    }
+                },
+                y: {
+                    // beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '#'
+                    }
+                }
+            }
+        }
+    });
 });
+
+ "A",
+                    "hsl(214,45%,49%)",
+                    // "hsl(214,45%,49%)", // previous
+                    "B",
+                    "hsl(150,86%,28%)",
+                    // "hsl(195,59%,79%)", // previous
+                    "C",
+                    "hsl(87,53%,56%)",
+                    // "hsl(30,98%,69%)", // previous
+                    "D",
+                    "hsl(58,87%,58%)",
+                    // "hsl(14,89%,61%)", // previous
+
+//
+//     var feature = features[0];
+//
+//     var popup = new mapboxgl.Popup({ offset: [0, -15] })
+//         .setLngLat(e.lngLat)
+//         .setHTML('' +
+//             '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+//             '<p>' + feature.properties['LSOA_uprn_count'] + ' number of dwellings' + '</p>' +
+//             '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_count'] + ') ' +
+//             feature.properties['LSOA_epc_g_to_d_percent'] + '% of dwellings with epcs G to D' + '</p>' +
+//             '<p>' + '(' + feature.properties['LSOA_no epc_count'] + ') ' +
+//             feature.properties['LSOA_no epc_percent'] + '% of dwellings without epc' + '</p>' +
+//             '<p>' + '(' + feature.properties['LSOA_epc_g_to_d_and_no_epc_count'] + ') ' +
+//             feature.properties['LSOA_epc_g_to_d_and_no_epc_percent'] + '% of dwellings with epc G to D or no epc' + '</p>'
+//         )
+//         .addTo(map);
+// });
 
 map.on('click', function(e) {
     var features = map.queryRenderedFeatures(e.point, {
