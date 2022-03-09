@@ -727,7 +727,7 @@ map.on('click', function(e) {
             datasets: [{
                 label: 'RdSAP Histogram',
                 barPercentage: 1,
-                categoryPercentage: 1,
+                categoryPercentage: 0.8,
                 data: data,
                 backgroundColor: bgroundColour,
                 borderColor: bgroundColour,
@@ -753,7 +753,7 @@ map.on('click', function(e) {
                     }
                 },
                 y: {
-                    // beginAtZero: true,
+                    beginAtZero: true,
                     title: {
                         display: true,
                         text: '#'
@@ -763,19 +763,6 @@ map.on('click', function(e) {
         }
     });
 });
-
- "A",
-                    "hsl(214,45%,49%)",
-                    // "hsl(214,45%,49%)", // previous
-                    "B",
-                    "hsl(150,86%,28%)",
-                    // "hsl(195,59%,79%)", // previous
-                    "C",
-                    "hsl(87,53%,56%)",
-                    // "hsl(30,98%,69%)", // previous
-                    "D",
-                    "hsl(58,87%,58%)",
-                    // "hsl(14,89%,61%)", // previous
 
 //
 //     var feature = features[0];
