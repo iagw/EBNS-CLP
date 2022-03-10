@@ -782,29 +782,31 @@ map.on('click', function(e) {
 //         .addTo(map);
 // });
 
-map.on('click', function(e) {
-    var features = map.queryRenderedFeatures(e.point, {
-        layers: ['lsoaChoropleth2'] // replace this with the name of the layer
-    });
+// map.on('click', function(e) {
+//     var features = map.queryRenderedFeatures(e.point, {
+//         layers: ['lsoaChoropleth2'] // replace this with the name of the layer
+//     });
+//
+//     if (!features.length) {
+//         return;
+//     }
+//
+//     var feature = features[0];
+//
+//     var popup = new mapboxgl.Popup({ offset: [0, -15] })
+//         .setLngLat(e.lngLat)
+//         .setHTML('' +
+//             '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
+//             '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEDI'] + ' for local energy deprivation' + '</p>' +
+//             '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEEDI'] + ' for local education & employment deprivation' + '</p>' +
+//             '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LHDI'] + ' for local health deprivation' + '</p>' +
+//             '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LAHAHI'] + ' for local access deprivation' + '</p>' +
+//             '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_EQUAL WEIGHTING'] + ' for overall intervention prioritisation' + '</p>'
+//         )
+//         .addTo(map);
+// });
 
-    if (!features.length) {
-        return;
-    }
 
-    var feature = features[0];
-
-    var popup = new mapboxgl.Popup({ offset: [0, -15] })
-        .setLngLat(e.lngLat)
-        .setHTML('' +
-            '<h3>'+ feature.properties['LSOA11NM'] + '</h3>' +
-            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEDI'] + ' for local energy deprivation' + '</p>' +
-            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LEEDI'] + ' for local education & employment deprivation' + '</p>' +
-            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LHDI'] + ' for local health deprivation' + '</p>' +
-            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_LAHAHI'] + ' for local access deprivation' + '</p>' +
-            '<p>' + 'Decile ' + feature.properties['Indicative weightings for 18.11.2021_EQUAL WEIGHTING'] + ' for overall intervention prioritisation' + '</p>'
-        )
-        .addTo(map);
-});
 // map.on('click', function(e) {
 //     // var feature = map.getSource('id2')._options.data;
 //     //
@@ -1072,6 +1074,7 @@ document.querySelectorAll('[name="checkboxLayerList"], [name="epcRatingCBs"], [n
         var heatMapFilter = ['in', 'current_energy_rating', ...epcShowList];
 
         var combinedFilter = ["all", epcRatingFilter, tenureFilter, bromfordFilter];
+        console.log(combinedFilter)
         map.setFilter('id2', combinedFilter);
         map.setFilter('data-driven-circles-labels', combinedFilter);
         // map.setFilter('heatMap', heatMapFilter);
